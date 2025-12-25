@@ -5,6 +5,7 @@ const base = import.meta.env.BASE_URL;
 
 <Layout title="About">
   <section class="page-hero">
+    <div class="hero-bg"></div>
     <div class="page-hero-content">
       <h1>About Our Parish</h1>
       <p>Discover the beauty of the Byzantine Catholic tradition</p>
@@ -55,18 +56,30 @@ const base = import.meta.env.BASE_URL;
       <div class="decorative-line center"></div>
       <div class="beliefs-grid">
         <div class="belief">
+          <div class="belief-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+          </div>
           <h3>The Holy Trinity</h3>
           <p>We worship one God in Trinity and Trinity in Unity—Father, Son, and Holy Spirit—three persons in one divine essence.</p>
         </div>
         <div class="belief">
+          <div class="belief-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20"/><path d="M2 12h20"/></svg>
+          </div>
           <h3>Jesus Christ</h3>
           <p>We confess Jesus Christ as Lord, true God and true man, born of the Virgin Mary, who died and rose for our salvation.</p>
         </div>
         <div class="belief">
+          <div class="belief-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z"/></svg>
+          </div>
           <h3>The Holy Mysteries</h3>
           <p>We celebrate the seven Holy Mysteries (Sacraments): Baptism, Chrismation, Eucharist, Confession, Anointing, Holy Orders, and Crowning (Marriage).</p>
         </div>
         <div class="belief">
+          <div class="belief-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2Z"/><path d="m9 16 .348-.24c1.465-1.013 3.84-1.013 5.304 0L15 16"/><path d="M8 7h.01"/><path d="M16 7h.01"/><path d="M12 7h.01"/><path d="M12 11h.01"/><path d="M16 11h.01"/><path d="M8 11h.01"/><path d="M10 22v-6.5m4 0V22"/></svg>
+          </div>
           <h3>The Church</h3>
           <p>We are members of the One, Holy, Catholic, and Apostolic Church, in full communion with the Bishop of Rome.</p>
         </div>
@@ -96,28 +109,36 @@ const base = import.meta.env.BASE_URL;
         </div>
         <div class="eastern-features">
           <div class="eastern-feature">
-            <span class="feature-icon">🕯</span>
+            <span class="feature-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2c1 3 2.5 3.5 3.5 4.5A5 5 0 0 1 17 10a5 5 0 1 1-10 0c0-.3 0-.6.1-.9a2 2 0 1 0 3.3-2C8 4.5 11 2 12 2Z"/><path d="m12 10 1 3-3 2 3 2-1 3"/></svg>
+            </span>
             <div>
               <h4>Liturgical Richness</h4>
               <p>Ancient prayers, hymns, and ceremonies that have been handed down for centuries.</p>
             </div>
           </div>
           <div class="eastern-feature">
-            <span class="feature-icon">🖼</span>
+            <span class="feature-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg>
+            </span>
             <div>
               <h4>Sacred Iconography</h4>
               <p>Holy icons that serve as windows to heaven and aids to contemplation.</p>
             </div>
           </div>
           <div class="eastern-feature">
-            <span class="feature-icon">📿</span>
+            <span class="feature-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            </span>
             <div>
               <h4>Married Clergy</h4>
               <p>Our tradition permits the ordination of married men to the priesthood.</p>
             </div>
           </div>
           <div class="eastern-feature">
-            <span class="feature-icon">🍞</span>
+            <span class="feature-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14c0 1.4 3 2.7 7 3"/><path d="M21 5v14c0 1.4-3 2.7-7 3"/><path d="M14 12c-1-1-2-1.5-4-1.5s-3 .5-4 1.5"/><path d="M9 18c-1-1-2-1.5-4-1.5"/><path d="M15 18c1-1 2-1.5 4-1.5"/></svg>
+            </span>
             <div>
               <h4>Leavened Bread</h4>
               <p>We use leavened bread (prosphora) for the Eucharist, symbolizing the risen Christ.</p>
@@ -139,10 +160,31 @@ const base = import.meta.env.BASE_URL;
 
 <style>
   .page-hero {
-    background: linear-gradient(135deg, var(--burgundy-dark) 0%, var(--burgundy) 50%, var(--navy) 100%);
-    padding: 8rem 2rem 6rem;
+    position: relative;
+    padding: 10rem 2rem 8rem;
     text-align: center;
     color: var(--text-light);
+    overflow: hidden;
+  }
+
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    background-image: url('https://images.unsplash.com/photo-1544967082-d9d25d867d66?w=1920&q=80');
+    background-size: cover;
+    background-position: center;
+  }
+
+  .hero-bg::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(74, 31, 36, 0.9) 0%, rgba(114, 47, 55, 0.85) 50%, rgba(26, 39, 68, 0.9) 100%);
+  }
+
+  .page-hero-content {
+    position: relative;
+    z-index: 1;
   }
 
   .page-hero h1 {
@@ -255,8 +297,27 @@ const base = import.meta.env.BASE_URL;
   .belief {
     padding: 2rem;
     background: var(--cream);
-    border-radius: 8px;
-    text-align: left;
+    border-radius: 12px;
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .belief:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+  }
+
+  .belief-icon {
+    width: 64px;
+    height: 64px;
+    background: linear-gradient(135deg, var(--burgundy) 0%, var(--burgundy-dark) 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1.5rem;
+    color: var(--gold);
+    box-shadow: 0 4px 15px rgba(114, 47, 55, 0.3);
   }
 
   .belief h3 {
@@ -267,6 +328,7 @@ const base = import.meta.env.BASE_URL;
 
   .belief p {
     line-height: 1.7;
+    text-align: left;
   }
 
   .eastern-section {
@@ -308,8 +370,15 @@ const base = import.meta.env.BASE_URL;
   }
 
   .eastern-feature .feature-icon {
-    font-size: 2rem;
+    width: 56px;
+    height: 56px;
+    background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     flex-shrink: 0;
+    color: var(--gold);
   }
 
   .eastern-feature h4 {

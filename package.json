@@ -12,6 +12,7 @@
     "@fullcalendar/core": "^6.1.20",
     "@fullcalendar/daygrid": "^6.1.20",
     "@fullcalendar/list": "^6.1.20",
-    "astro": "^5.16.6"
+    "astro": "^5.16.6",
+    "lucide-static": "^0.562.0"
   }
 }

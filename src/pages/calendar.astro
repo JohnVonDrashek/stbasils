@@ -1,0 +1,529 @@
+---
+import Layout from '../layouts/Layout.astro';
+const base = import.meta.env.BASE_URL;
+
+// Get current month info
+const now = new Date();
+const currentMonth = now.getMonth();
+const currentYear = now.getFullYear();
+const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
+// Sample events - these would typically come from a CMS or data file
+const upcomingEvents = [
+  { date: "Every Sunday", title: "Divine Liturgy", time: "10:00 AM", type: "liturgy" },
+  { date: "Every Saturday", title: "Great Vespers", time: "4:00 PM", type: "liturgy" },
+  { date: "Every Wednesday", title: "Weekday Divine Liturgy", time: "7:00 PM", type: "liturgy" },
+  { date: "January 1", title: "Feast of St. Basil the Great", time: "10:00 AM", type: "feast" },
+  { date: "January 6", title: "Theophany (Epiphany)", time: "10:00 AM", type: "feast" },
+  { date: "January 7", title: "Synaxis of St. John the Baptist", time: "10:00 AM", type: "feast" },
+  { date: "February 2", title: "Encounter of Our Lord (Presentation)", time: "10:00 AM", type: "feast" },
+  { date: "March 25", title: "Annunciation", time: "10:00 AM", type: "feast" },
+  { date: "August 6", title: "Transfiguration of Our Lord", time: "10:00 AM", type: "feast" },
+  { date: "August 15", title: "Dormition of the Theotokos", time: "10:00 AM", type: "feast" },
+  { date: "September 8", title: "Nativity of the Theotokos", time: "10:00 AM", type: "feast" },
+  { date: "September 14", title: "Exaltation of the Holy Cross", time: "10:00 AM", type: "feast" },
+  { date: "November 21", title: "Entrance of the Theotokos", time: "10:00 AM", type: "feast" },
+  { date: "December 25", title: "Nativity of Our Lord (Christmas)", time: "10:00 AM", type: "feast" },
+];
+
+const seasons = [
+  { name: "Great Lent", description: "The 40-day fast before Pascha (Easter), beginning with Clean Monday. Presanctified Liturgy on Wednesdays and Fridays at 7:00 PM." },
+  { name: "Pascha (Easter)", description: "The Feast of Feasts, celebrating the Resurrection of Our Lord. Preceded by Holy Week services." },
+  { name: "Apostles' Fast", description: "Begins the Monday after All Saints Sunday and continues until the Feast of Ss. Peter and Paul (June 29)." },
+  { name: "Dormition Fast", description: "August 1-14, preparing for the Feast of the Dormition of the Theotokos." },
+  { name: "Nativity Fast (Philip's Fast)", description: "November 15 - December 24, the 40-day preparation for Christmas." },
+];
+---
+
+<Layout title="Calendar">
+  <section class="page-hero">
+    <div class="page-hero-content">
+      <h1>Parish Calendar</h1>
+      <p>Liturgical celebrations and parish events</p>
+    </div>
+  </section>
+
+  <section class="schedule-section">
+    <div class="container">
+      <h2>Weekly Schedule</h2>
+      <div class="decorative-line center"></div>
+      <div class="weekly-grid">
+        <div class="day-card">
+          <div class="day-name">Saturday</div>
+          <div class="day-services">
+            <div class="service-item">
+              <span class="service-time">4:00 PM</span>
+              <span class="service-name">Great Vespers</span>
+            </div>
+            <div class="service-item">
+              <span class="service-time">5:00 PM</span>
+              <span class="service-name">Confessions</span>
+            </div>
+          </div>
+        </div>
+        <div class="day-card primary">
+          <div class="day-name">Sunday</div>
+          <div class="day-services">
+            <div class="service-item">
+              <span class="service-time">8:30 AM</span>
+              <span class="service-name">Matins</span>
+            </div>
+            <div class="service-item highlight">
+              <span class="service-time">10:00 AM</span>
+              <span class="service-name">Divine Liturgy</span>
+            </div>
+            <div class="service-item">
+              <span class="service-time">9:00 AM</span>
+              <span class="service-name">Confessions</span>
+            </div>
+          </div>
+        </div>
+        <div class="day-card">
+          <div class="day-name">Wednesday</div>
+          <div class="day-services">
+            <div class="service-item">
+              <span class="service-time">7:00 PM</span>
+              <span class="service-name">Divine Liturgy</span>
+            </div>
+          </div>
+          <div class="day-note">Check calendar for special services</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="feasts-section">
+    <div class="container">
+      <h2>Major Feast Days</h2>
+      <div class="decorative-line center"></div>
+      <p class="section-intro">
+        The Byzantine liturgical year is rich with celebrations honoring Our Lord, the Theotokos,
+        and the saints. Here are the Twelve Great Feasts and other major celebrations.
+      </p>
+
+      <div class="feasts-grid">
+        <div class="feast-card">
+          <div class="feast-date">September 8</div>
+          <h3>Nativity of the Theotokos</h3>
+          <p>The birth of the Blessed Virgin Mary</p>
+        </div>
+        <div class="feast-card">
+          <div class="feast-date">September 14</div>
+          <h3>Exaltation of the Holy Cross</h3>
+          <p>Commemorating the finding of the True Cross</p>
+        </div>
+        <div class="feast-card">
+          <div class="feast-date">November 21</div>
+          <h3>Entrance of the Theotokos</h3>
+          <p>Mary's presentation in the Temple</p>
+        </div>
+        <div class="feast-card">
+          <div class="feast-date">December 25</div>
+          <h3>Nativity of Our Lord</h3>
+          <p>The birth of Jesus Christ</p>
+        </div>
+        <div class="feast-card">
+          <div class="feast-date">January 1</div>
+          <h3>Feast of St. Basil</h3>
+          <p>Our parish patron saint</p>
+        </div>
+        <div class="feast-card">
+          <div class="feast-date">January 6</div>
+          <h3>Theophany</h3>
+          <p>Baptism of Our Lord in the Jordan</p>
+        </div>
+        <div class="feast-card">
+          <div class="feast-date">February 2</div>
+          <h3>Encounter of Our Lord</h3>
+          <p>Presentation of Christ in the Temple</p>
+        </div>
+        <div class="feast-card">
+          <div class="feast-date">March 25</div>
+          <h3>Annunciation</h3>
+          <p>The Angel Gabriel's message to Mary</p>
+        </div>
+        <div class="feast-card moveable">
+          <div class="feast-date">Moveable</div>
+          <h3>Palm Sunday</h3>
+          <p>Entry of Our Lord into Jerusalem</p>
+        </div>
+        <div class="feast-card moveable">
+          <div class="feast-date">Moveable</div>
+          <h3>Pascha (Easter)</h3>
+          <p>The Resurrection of Our Lord</p>
+        </div>
+        <div class="feast-card moveable">
+          <div class="feast-date">Moveable</div>
+          <h3>Ascension</h3>
+          <p>Our Lord's ascension into Heaven</p>
+        </div>
+        <div class="feast-card moveable">
+          <div class="feast-date">Moveable</div>
+          <h3>Pentecost</h3>
+          <p>Descent of the Holy Spirit</p>
+        </div>
+        <div class="feast-card">
+          <div class="feast-date">August 6</div>
+          <h3>Transfiguration</h3>
+          <p>Christ's glory revealed on Mt. Tabor</p>
+        </div>
+        <div class="feast-card">
+          <div class="feast-date">August 15</div>
+          <h3>Dormition of the Theotokos</h3>
+          <p>The falling asleep of the Virgin Mary</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="seasons-section">
+    <div class="container">
+      <h2>Liturgical Seasons</h2>
+      <div class="decorative-line center"></div>
+      <div class="seasons-grid">
+        {seasons.map(season => (
+          <div class="season-card">
+            <h3>{season.name}</h3>
+            <p>{season.description}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="note-section">
+    <div class="container">
+      <div class="note-box">
+        <h3>📅 Stay Updated</h3>
+        <p>
+          For the most current schedule including special services, holy day celebrations,
+          and parish events, please contact the parish office or check our bulletin each week.
+        </p>
+        <p>
+          <strong>Note:</strong> Some feasts may be celebrated on different dates when they fall
+          on weekdays. Pascha and related feasts are calculated according to the Church calendar
+          and vary each year.
+        </p>
+        <a href={`${base}contact`} class="btn btn-outline">Contact Us</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta-section">
+    <div class="container">
+      <h2>Join Us for Worship</h2>
+      <p>All are welcome to experience the beauty of the Byzantine Divine Liturgy.</p>
+      <a href={`${base}liturgy`} class="btn btn-primary">View Service Times</a>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .page-hero {
+    background: linear-gradient(135deg, var(--burgundy-dark) 0%, var(--burgundy) 50%, var(--navy) 100%);
+    padding: 8rem 2rem 6rem;
+    text-align: center;
+    color: var(--text-light);
+  }
+
+  .page-hero h1 {
+    font-size: clamp(2rem, 6vw, 3.5rem);
+    color: var(--gold);
+    margin-bottom: 1rem;
+  }
+
+  .page-hero p {
+    font-size: 1.3rem;
+    opacity: 0.9;
+  }
+
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 2rem;
+  }
+
+  .decorative-line {
+    width: 80px;
+    height: 3px;
+    background: var(--gold);
+    margin-bottom: 2rem;
+  }
+
+  .decorative-line.center {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .schedule-section {
+    padding: 5rem 2rem;
+    background: var(--cream);
+    text-align: center;
+  }
+
+  .schedule-section h2 {
+    font-size: 2.2rem;
+    color: var(--burgundy);
+    margin-bottom: 1rem;
+  }
+
+  .weekly-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+  }
+
+  .day-card {
+    background: var(--white);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+  }
+
+  .day-card.primary {
+    border: 3px solid var(--gold);
+  }
+
+  .day-name {
+    background: var(--navy);
+    color: var(--gold);
+    padding: 1rem;
+    font-family: 'Cinzel', serif;
+    font-size: 1.3rem;
+    font-weight: 600;
+  }
+
+  .day-card.primary .day-name {
+    background: var(--burgundy);
+  }
+
+  .day-services {
+    padding: 1.5rem;
+  }
+
+  .service-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid rgba(0,0,0,0.08);
+  }
+
+  .service-item:last-child {
+    border-bottom: none;
+  }
+
+  .service-item.highlight {
+    background: rgba(201, 162, 39, 0.15);
+    margin: 0.5rem -1.5rem;
+    padding: 0.75rem 1.5rem;
+  }
+
+  .service-time {
+    font-weight: 600;
+    color: var(--burgundy);
+  }
+
+  .service-name {
+    color: var(--text-dark);
+  }
+
+  .day-note {
+    padding: 0.75rem 1.5rem;
+    background: var(--cream);
+    font-size: 0.9rem;
+    font-style: italic;
+    color: var(--text-dark);
+  }
+
+  .feasts-section {
+    padding: 5rem 2rem;
+    background: var(--white);
+    text-align: center;
+  }
+
+  .feasts-section h2 {
+    font-size: 2.2rem;
+    color: var(--burgundy);
+    margin-bottom: 1rem;
+  }
+
+  .section-intro {
+    max-width: 700px;
+    margin: 0 auto 3rem;
+    line-height: 1.8;
+  }
+
+  .feasts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 1.5rem;
+    text-align: left;
+  }
+
+  .feast-card {
+    background: var(--cream);
+    padding: 1.5rem;
+    border-radius: 8px;
+    border-left: 4px solid var(--gold);
+    transition: transform 0.2s ease;
+  }
+
+  .feast-card:hover {
+    transform: translateY(-3px);
+  }
+
+  .feast-card.moveable {
+    border-left-color: var(--burgundy);
+  }
+
+  .feast-date {
+    font-family: 'Cinzel', serif;
+    font-size: 0.85rem;
+    color: var(--burgundy);
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+  }
+
+  .feast-card.moveable .feast-date {
+    color: var(--navy);
+    font-style: italic;
+  }
+
+  .feast-card h3 {
+    color: var(--navy);
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .feast-card p {
+    font-size: 0.95rem;
+    color: var(--text-dark);
+    opacity: 0.85;
+    margin: 0;
+  }
+
+  .seasons-section {
+    padding: 5rem 2rem;
+    background: var(--cream);
+    text-align: center;
+  }
+
+  .seasons-section h2 {
+    font-size: 2.2rem;
+    color: var(--burgundy);
+    margin-bottom: 1rem;
+  }
+
+  .seasons-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+    text-align: left;
+  }
+
+  .season-card {
+    background: var(--white);
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+  }
+
+  .season-card h3 {
+    color: var(--navy);
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+  }
+
+  .season-card p {
+    line-height: 1.7;
+    margin: 0;
+  }
+
+  .note-section {
+    padding: 5rem 2rem;
+    background: var(--white);
+  }
+
+  .note-box {
+    max-width: 700px;
+    margin: 0 auto;
+    background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%);
+    padding: 3rem;
+    border-radius: 12px;
+    text-align: center;
+    color: var(--text-light);
+  }
+
+  .note-box h3 {
+    color: var(--gold);
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .note-box p {
+    margin-bottom: 1.5rem;
+    line-height: 1.8;
+    opacity: 0.9;
+  }
+
+  .btn {
+    display: inline-block;
+    padding: 1rem 2rem;
+    font-family: 'Cinzel', serif;
+    font-size: 0.95rem;
+    letter-spacing: 0.05em;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+  }
+
+  .btn-primary {
+    background: var(--gold);
+    color: var(--navy);
+    border: 2px solid var(--gold);
+  }
+
+  .btn-primary:hover {
+    background: var(--gold-light);
+    border-color: var(--gold-light);
+    transform: translateY(-2px);
+  }
+
+  .btn-outline {
+    background: transparent;
+    color: var(--text-light);
+    border: 2px solid var(--gold);
+  }
+
+  .btn-outline:hover {
+    background: var(--gold);
+    color: var(--navy);
+    transform: translateY(-2px);
+  }
+
+  .cta-section {
+    padding: 5rem 2rem;
+    background: linear-gradient(135deg, var(--burgundy-dark) 0%, var(--burgundy) 100%);
+    text-align: center;
+    color: var(--text-light);
+  }
+
+  .cta-section h2 {
+    font-size: 2.2rem;
+    color: var(--gold);
+    margin-bottom: 1rem;
+  }
+
+  .cta-section p {
+    font-size: 1.2rem;
+    margin-bottom: 2rem;
+    opacity: 0.9;
+  }
+
+  @media (max-width: 768px) {
+    .feasts-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

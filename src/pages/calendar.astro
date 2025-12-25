@@ -1,38 +1,6 @@
 ---
 import Layout from '../layouts/Layout.astro';
 const base = import.meta.env.BASE_URL;
-
-// Get current month info
-const now = new Date();
-const currentMonth = now.getMonth();
-const currentYear = now.getFullYear();
-const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-
-// Sample events - these would typically come from a CMS or data file
-const upcomingEvents = [
-  { date: "Every Sunday", title: "Divine Liturgy", time: "10:00 AM", type: "liturgy" },
-  { date: "Every Saturday", title: "Great Vespers", time: "4:00 PM", type: "liturgy" },
-  { date: "Every Wednesday", title: "Weekday Divine Liturgy", time: "7:00 PM", type: "liturgy" },
-  { date: "January 1", title: "Feast of St. Basil the Great", time: "10:00 AM", type: "feast" },
-  { date: "January 6", title: "Theophany (Epiphany)", time: "10:00 AM", type: "feast" },
-  { date: "January 7", title: "Synaxis of St. John the Baptist", time: "10:00 AM", type: "feast" },
-  { date: "February 2", title: "Encounter of Our Lord (Presentation)", time: "10:00 AM", type: "feast" },
-  { date: "March 25", title: "Annunciation", time: "10:00 AM", type: "feast" },
-  { date: "August 6", title: "Transfiguration of Our Lord", time: "10:00 AM", type: "feast" },
-  { date: "August 15", title: "Dormition of the Theotokos", time: "10:00 AM", type: "feast" },
-  { date: "September 8", title: "Nativity of the Theotokos", time: "10:00 AM", type: "feast" },
-  { date: "September 14", title: "Exaltation of the Holy Cross", time: "10:00 AM", type: "feast" },
-  { date: "November 21", title: "Entrance of the Theotokos", time: "10:00 AM", type: "feast" },
-  { date: "December 25", title: "Nativity of Our Lord (Christmas)", time: "10:00 AM", type: "feast" },
-];
-
-const seasons = [
-  { name: "Great Lent", description: "The 40-day fast before Pascha (Easter), beginning with Clean Monday. Presanctified Liturgy on Wednesdays and Fridays at 7:00 PM." },
-  { name: "Pascha (Easter)", description: "The Feast of Feasts, celebrating the Resurrection of Our Lord. Preceded by Holy Week services." },
-  { name: "Apostles' Fast", description: "Begins the Monday after All Saints Sunday and continues until the Feast of Ss. Peter and Paul (June 29)." },
-  { name: "Dormition Fast", description: "August 1-14, preparing for the Feast of the Dormition of the Theotokos." },
-  { name: "Nativity Fast (Philip's Fast)", description: "November 15 - December 24, the 40-day preparation for Christmas." },
-];
 ---
 
 <Layout title="Calendar">
@@ -40,6 +8,43 @@ const seasons = [
     <div class="page-hero-content">
       <h1>Parish Calendar</h1>
       <p>Liturgical celebrations and parish events</p>
+    </div>
+  </section>
+
+  <section class="calendar-section">
+    <div class="container">
+      <div class="calendar-wrapper">
+        <div class="calendar-header">
+          <button id="prevMonth" class="nav-btn" aria-label="Previous month">&#8249;</button>
+          <h2 id="currentMonth">December 2024</h2>
+          <button id="nextMonth" class="nav-btn" aria-label="Next month">&#8250;</button>
+        </div>
+
+        <div class="calendar-grid">
+          <div class="calendar-weekdays">
+            <div>Sun</div>
+            <div>Mon</div>
+            <div>Tue</div>
+            <div>Wed</div>
+            <div>Thu</div>
+            <div>Fri</div>
+            <div>Sat</div>
+          </div>
+          <div id="calendarDays" class="calendar-days"></div>
+        </div>
+
+        <div class="calendar-legend">
+          <div class="legend-item"><span class="legend-dot liturgy"></span> Weekly Services</div>
+          <div class="legend-item"><span class="legend-dot feast"></span> Major Feast</div>
+          <div class="legend-item"><span class="legend-dot patron"></span> Patron Saint</div>
+        </div>
+      </div>
+
+      <div id="eventDetails" class="event-details hidden">
+        <button id="closeEvents" class="close-btn" aria-label="Close">&times;</button>
+        <h3 id="eventDate">December 25</h3>
+        <div id="eventList"></div>
+      </div>
     </div>
   </section>
 
@@ -92,119 +97,27 @@ const seasons = [
     </div>
   </section>
 
-  <section class="feasts-section">
-    <div class="container">
-      <h2>Major Feast Days</h2>
-      <div class="decorative-line center"></div>
-      <p class="section-intro">
-        The Byzantine liturgical year is rich with celebrations honoring Our Lord, the Theotokos,
-        and the saints. Here are the Twelve Great Feasts and other major celebrations.
-      </p>
-
-      <div class="feasts-grid">
-        <div class="feast-card">
-          <div class="feast-date">September 8</div>
-          <h3>Nativity of the Theotokos</h3>
-          <p>The birth of the Blessed Virgin Mary</p>
-        </div>
-        <div class="feast-card">
-          <div class="feast-date">September 14</div>
-          <h3>Exaltation of the Holy Cross</h3>
-          <p>Commemorating the finding of the True Cross</p>
-        </div>
-        <div class="feast-card">
-          <div class="feast-date">November 21</div>
-          <h3>Entrance of the Theotokos</h3>
-          <p>Mary's presentation in the Temple</p>
-        </div>
-        <div class="feast-card">
-          <div class="feast-date">December 25</div>
-          <h3>Nativity of Our Lord</h3>
-          <p>The birth of Jesus Christ</p>
-        </div>
-        <div class="feast-card">
-          <div class="feast-date">January 1</div>
-          <h3>Feast of St. Basil</h3>
-          <p>Our parish patron saint</p>
-        </div>
-        <div class="feast-card">
-          <div class="feast-date">January 6</div>
-          <h3>Theophany</h3>
-          <p>Baptism of Our Lord in the Jordan</p>
-        </div>
-        <div class="feast-card">
-          <div class="feast-date">February 2</div>
-          <h3>Encounter of Our Lord</h3>
-          <p>Presentation of Christ in the Temple</p>
-        </div>
-        <div class="feast-card">
-          <div class="feast-date">March 25</div>
-          <h3>Annunciation</h3>
-          <p>The Angel Gabriel's message to Mary</p>
-        </div>
-        <div class="feast-card moveable">
-          <div class="feast-date">Moveable</div>
-          <h3>Palm Sunday</h3>
-          <p>Entry of Our Lord into Jerusalem</p>
-        </div>
-        <div class="feast-card moveable">
-          <div class="feast-date">Moveable</div>
-          <h3>Pascha (Easter)</h3>
-          <p>The Resurrection of Our Lord</p>
-        </div>
-        <div class="feast-card moveable">
-          <div class="feast-date">Moveable</div>
-          <h3>Ascension</h3>
-          <p>Our Lord's ascension into Heaven</p>
-        </div>
-        <div class="feast-card moveable">
-          <div class="feast-date">Moveable</div>
-          <h3>Pentecost</h3>
-          <p>Descent of the Holy Spirit</p>
-        </div>
-        <div class="feast-card">
-          <div class="feast-date">August 6</div>
-          <h3>Transfiguration</h3>
-          <p>Christ's glory revealed on Mt. Tabor</p>
-        </div>
-        <div class="feast-card">
-          <div class="feast-date">August 15</div>
-          <h3>Dormition of the Theotokos</h3>
-          <p>The falling asleep of the Virgin Mary</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
   <section class="seasons-section">
     <div class="container">
       <h2>Liturgical Seasons</h2>
       <div class="decorative-line center"></div>
       <div class="seasons-grid">
-        {seasons.map(season => (
-          <div class="season-card">
-            <h3>{season.name}</h3>
-            <p>{season.description}</p>
-          </div>
-        ))}
-      </div>
-    </div>
-  </section>
-
-  <section class="note-section">
-    <div class="container">
-      <div class="note-box">
-        <h3>📅 Stay Updated</h3>
-        <p>
-          For the most current schedule including special services, holy day celebrations,
-          and parish events, please contact the parish office or check our bulletin each week.
-        </p>
-        <p>
-          <strong>Note:</strong> Some feasts may be celebrated on different dates when they fall
-          on weekdays. Pascha and related feasts are calculated according to the Church calendar
-          and vary each year.
-        </p>
-        <a href={`${base}contact`} class="btn btn-outline">Contact Us</a>
+        <div class="season-card">
+          <h3>Great Lent</h3>
+          <p>The 40-day fast before Pascha, beginning with Clean Monday. Presanctified Liturgy on Wednesdays and Fridays at 7:00 PM.</p>
+        </div>
+        <div class="season-card">
+          <h3>Pascha (Easter)</h3>
+          <p>The Feast of Feasts, celebrating the Resurrection of Our Lord. Preceded by Holy Week services.</p>
+        </div>
+        <div class="season-card">
+          <h3>Dormition Fast</h3>
+          <p>August 1-14, preparing for the Feast of the Dormition of the Theotokos.</p>
+        </div>
+        <div class="season-card">
+          <h3>Nativity Fast</h3>
+          <p>November 15 - December 24, the 40-day preparation for Christmas.</p>
+        </div>
       </div>
     </div>
   </section>
@@ -217,6 +130,178 @@ const seasons = [
     </div>
   </section>
 </Layout>
+
+<script>
+  // Event data
+  const events: Record<string, Array<{title: string, time: string, type: string, description?: string}>> = {
+    // Fixed feasts (month-day format)
+    "1-1": [{ title: "Feast of St. Basil the Great", time: "10:00 AM", type: "patron", description: "Our parish patron saint - Circumcision of Our Lord" }],
+    "1-6": [{ title: "Theophany (Epiphany)", time: "10:00 AM", type: "feast", description: "Baptism of Our Lord in the Jordan River" }],
+    "1-7": [{ title: "Synaxis of St. John the Baptist", time: "10:00 AM", type: "feast", description: "Honoring the Forerunner of Christ" }],
+    "2-2": [{ title: "Encounter of Our Lord", time: "10:00 AM", type: "feast", description: "Presentation of Christ in the Temple" }],
+    "3-25": [{ title: "Annunciation", time: "10:00 AM", type: "feast", description: "The Angel Gabriel announces to Mary" }],
+    "8-6": [{ title: "Transfiguration of Our Lord", time: "10:00 AM", type: "feast", description: "Christ's glory revealed on Mount Tabor" }],
+    "8-15": [{ title: "Dormition of the Theotokos", time: "10:00 AM", type: "feast", description: "The falling asleep of the Virgin Mary" }],
+    "9-8": [{ title: "Nativity of the Theotokos", time: "10:00 AM", type: "feast", description: "Birth of the Blessed Virgin Mary" }],
+    "9-14": [{ title: "Exaltation of the Holy Cross", time: "10:00 AM", type: "feast", description: "Finding of the True Cross" }],
+    "11-21": [{ title: "Entrance of the Theotokos", time: "10:00 AM", type: "feast", description: "Mary's presentation in the Temple" }],
+    "12-25": [{ title: "Nativity of Our Lord", time: "10:00 AM", type: "feast", description: "The birth of Jesus Christ - Christmas" }],
+    "12-24": [{ title: "Christmas Eve - Holy Supper", time: "Evening", type: "feast", description: "Traditional Svjata Večera with twelve meatless dishes" }],
+  };
+
+  const monthNames = ["January", "February", "March", "April", "May", "June",
+                      "July", "August", "September", "October", "November", "December"];
+
+  let currentDate = new Date();
+  let currentMonth = currentDate.getMonth();
+  let currentYear = currentDate.getFullYear();
+
+  function getDaysInMonth(month: number, year: number): number {
+    return new Date(year, month + 1, 0).getDate();
+  }
+
+  function getFirstDayOfMonth(month: number, year: number): number {
+    return new Date(year, month, 1).getDay();
+  }
+
+  function getEventsForDate(day: number, month: number, year: number): Array<{title: string, time: string, type: string, description?: string}> {
+    const dateEvents: Array<{title: string, time: string, type: string, description?: string}> = [];
+    const date = new Date(year, month, day);
+    const dayOfWeek = date.getDay();
+
+    // Add recurring weekly events
+    if (dayOfWeek === 0) { // Sunday
+      dateEvents.push({ title: "Matins", time: "8:30 AM", type: "liturgy" });
+      dateEvents.push({ title: "Divine Liturgy", time: "10:00 AM", type: "liturgy" });
+      dateEvents.push({ title: "Confessions", time: "9:00-9:30 AM", type: "liturgy" });
+    }
+    if (dayOfWeek === 6) { // Saturday
+      dateEvents.push({ title: "Great Vespers", time: "4:00 PM", type: "liturgy" });
+      dateEvents.push({ title: "Confessions", time: "5:00-5:50 PM", type: "liturgy" });
+    }
+    if (dayOfWeek === 3) { // Wednesday
+      dateEvents.push({ title: "Divine Liturgy", time: "7:00 PM", type: "liturgy" });
+    }
+
+    // Add fixed feasts
+    const key = `${month + 1}-${day}`;
+    if (events[key]) {
+      dateEvents.push(...events[key]);
+    }
+
+    return dateEvents;
+  }
+
+  function renderCalendar(): void {
+    const calendarDays = document.getElementById('calendarDays');
+    const currentMonthEl = document.getElementById('currentMonth');
+
+    if (!calendarDays || !currentMonthEl) return;
+
+    currentMonthEl.textContent = `${monthNames[currentMonth]} ${currentYear}`;
+
+    const daysInMonth = getDaysInMonth(currentMonth, currentYear);
+    const firstDay = getFirstDayOfMonth(currentMonth, currentYear);
+    const today = new Date();
+
+    let html = '';
+
+    // Empty cells for days before the first day of the month
+    for (let i = 0; i < firstDay; i++) {
+      html += '<div class="calendar-day empty"></div>';
+    }
+
+    // Days of the month
+    for (let day = 1; day <= daysInMonth; day++) {
+      const dayEvents = getEventsForDate(day, currentMonth, currentYear);
+      const isToday = day === today.getDate() &&
+                      currentMonth === today.getMonth() &&
+                      currentYear === today.getFullYear();
+
+      let classes = 'calendar-day';
+      if (isToday) classes += ' today';
+      if (dayEvents.length > 0) classes += ' has-events';
+
+      // Check for event types
+      const hasLiturgy = dayEvents.some(e => e.type === 'liturgy');
+      const hasFeast = dayEvents.some(e => e.type === 'feast');
+      const hasPatron = dayEvents.some(e => e.type === 'patron');
+
+      html += `<div class="${classes}" data-day="${day}">
+        <span class="day-number">${day}</span>
+        <div class="event-dots">
+          ${hasLiturgy ? '<span class="dot liturgy"></span>' : ''}
+          ${hasFeast ? '<span class="dot feast"></span>' : ''}
+          ${hasPatron ? '<span class="dot patron"></span>' : ''}
+        </div>
+      </div>`;
+    }
+
+    calendarDays.innerHTML = html;
+
+    // Add click handlers
+    document.querySelectorAll('.calendar-day:not(.empty)').forEach(dayEl => {
+      dayEl.addEventListener('click', () => {
+        const day = parseInt((dayEl as HTMLElement).dataset.day || '0');
+        showEventDetails(day);
+      });
+    });
+  }
+
+  function showEventDetails(day: number): void {
+    const eventDetails = document.getElementById('eventDetails');
+    const eventDate = document.getElementById('eventDate');
+    const eventList = document.getElementById('eventList');
+
+    if (!eventDetails || !eventDate || !eventList) return;
+
+    const dayEvents = getEventsForDate(day, currentMonth, currentYear);
+
+    eventDate.textContent = `${monthNames[currentMonth]} ${day}, ${currentYear}`;
+
+    if (dayEvents.length === 0) {
+      eventList.innerHTML = '<p class="no-events">No scheduled events</p>';
+    } else {
+      eventList.innerHTML = dayEvents.map(event => `
+        <div class="event-item ${event.type}">
+          <div class="event-time">${event.time}</div>
+          <div class="event-info">
+            <div class="event-title">${event.title}</div>
+            ${event.description ? `<div class="event-desc">${event.description}</div>` : ''}
+          </div>
+        </div>
+      `).join('');
+    }
+
+    eventDetails.classList.remove('hidden');
+  }
+
+  // Navigation
+  document.getElementById('prevMonth')?.addEventListener('click', () => {
+    currentMonth--;
+    if (currentMonth < 0) {
+      currentMonth = 11;
+      currentYear--;
+    }
+    renderCalendar();
+  });
+
+  document.getElementById('nextMonth')?.addEventListener('click', () => {
+    currentMonth++;
+    if (currentMonth > 11) {
+      currentMonth = 0;
+      currentYear++;
+    }
+    renderCalendar();
+  });
+
+  document.getElementById('closeEvents')?.addEventListener('click', () => {
+    document.getElementById('eventDetails')?.classList.add('hidden');
+  });
+
+  // Initial render
+  renderCalendar();
+</script>
 
 <style>
   .page-hero {
@@ -255,9 +340,249 @@ const seasons = [
     margin-right: auto;
   }
 
-  .schedule-section {
+  /* Calendar Section */
+  .calendar-section {
     padding: 5rem 2rem;
     background: var(--cream);
+  }
+
+  .calendar-section .container {
+    display: grid;
+    grid-template-columns: 1fr 350px;
+    gap: 2rem;
+    align-items: start;
+  }
+
+  .calendar-wrapper {
+    background: var(--white);
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    overflow: hidden;
+  }
+
+  .calendar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem 2rem;
+    background: var(--navy);
+  }
+
+  .calendar-header h2 {
+    color: var(--gold);
+    font-size: 1.5rem;
+    margin: 0;
+  }
+
+  .nav-btn {
+    background: transparent;
+    border: 2px solid var(--gold);
+    color: var(--gold);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .nav-btn:hover {
+    background: var(--gold);
+    color: var(--navy);
+  }
+
+  .calendar-grid {
+    padding: 1rem;
+  }
+
+  .calendar-weekdays {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    text-align: center;
+    font-family: 'Cinzel', serif;
+    font-size: 0.85rem;
+    color: var(--burgundy);
+    padding: 0.75rem 0;
+    border-bottom: 2px solid var(--cream);
+  }
+
+  .calendar-days {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 4px;
+    padding-top: 0.5rem;
+  }
+
+  .calendar-day {
+    aspect-ratio: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    position: relative;
+    min-height: 50px;
+  }
+
+  .calendar-day:not(.empty):hover {
+    background: var(--cream);
+  }
+
+  .calendar-day.empty {
+    cursor: default;
+  }
+
+  .calendar-day.today {
+    background: var(--navy);
+  }
+
+  .calendar-day.today .day-number {
+    color: var(--gold);
+    font-weight: 700;
+  }
+
+  .calendar-day.has-events {
+    font-weight: 600;
+  }
+
+  .day-number {
+    font-size: 1rem;
+    color: var(--text-dark);
+  }
+
+  .event-dots {
+    display: flex;
+    gap: 3px;
+    margin-top: 4px;
+  }
+
+  .dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+  }
+
+  .dot.liturgy { background: var(--navy); }
+  .dot.feast { background: var(--gold); }
+  .dot.patron { background: var(--burgundy); }
+
+  .calendar-legend {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    padding: 1rem;
+    border-top: 1px solid var(--cream);
+    font-size: 0.85rem;
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .legend-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+  }
+
+  .legend-dot.liturgy { background: var(--navy); }
+  .legend-dot.feast { background: var(--gold); }
+  .legend-dot.patron { background: var(--burgundy); }
+
+  /* Event Details Panel */
+  .event-details {
+    background: var(--white);
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    padding: 1.5rem;
+    position: relative;
+  }
+
+  .event-details.hidden {
+    display: none;
+  }
+
+  .close-btn {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    color: var(--text-dark);
+    cursor: pointer;
+    opacity: 0.5;
+    transition: opacity 0.2s;
+  }
+
+  .close-btn:hover {
+    opacity: 1;
+  }
+
+  .event-details h3 {
+    color: var(--burgundy);
+    font-size: 1.3rem;
+    margin-bottom: 1.5rem;
+    padding-right: 2rem;
+  }
+
+  .event-item {
+    display: flex;
+    gap: 1rem;
+    padding: 1rem;
+    border-radius: 8px;
+    margin-bottom: 0.75rem;
+    background: var(--cream);
+    border-left: 4px solid var(--navy);
+  }
+
+  .event-item.feast {
+    border-left-color: var(--gold);
+    background: rgba(201, 162, 39, 0.1);
+  }
+
+  .event-item.patron {
+    border-left-color: var(--burgundy);
+    background: rgba(114, 47, 55, 0.1);
+  }
+
+  .event-time {
+    font-weight: 600;
+    color: var(--burgundy);
+    font-size: 0.9rem;
+    white-space: nowrap;
+  }
+
+  .event-title {
+    font-weight: 600;
+    color: var(--navy);
+  }
+
+  .event-desc {
+    font-size: 0.9rem;
+    color: var(--text-dark);
+    opacity: 0.8;
+    margin-top: 0.25rem;
+  }
+
+  .no-events {
+    text-align: center;
+    color: var(--text-dark);
+    opacity: 0.6;
+    font-style: italic;
+  }
+
+  /* Schedule Section */
+  .schedule-section {
+    padding: 5rem 2rem;
+    background: var(--white);
     text-align: center;
   }
 
@@ -275,7 +600,7 @@ const seasons = [
   }
 
   .day-card {
-    background: var(--white);
+    background: var(--cream);
     border-radius: 12px;
     overflow: hidden;
     box-shadow: 0 4px 20px rgba(0,0,0,0.08);
@@ -300,6 +625,7 @@ const seasons = [
 
   .day-services {
     padding: 1.5rem;
+    background: var(--white);
   }
 
   .service-item {
@@ -336,73 +662,7 @@ const seasons = [
     color: var(--text-dark);
   }
 
-  .feasts-section {
-    padding: 5rem 2rem;
-    background: var(--white);
-    text-align: center;
-  }
-
-  .feasts-section h2 {
-    font-size: 2.2rem;
-    color: var(--burgundy);
-    margin-bottom: 1rem;
-  }
-
-  .section-intro {
-    max-width: 700px;
-    margin: 0 auto 3rem;
-    line-height: 1.8;
-  }
-
-  .feasts-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    gap: 1.5rem;
-    text-align: left;
-  }
-
-  .feast-card {
-    background: var(--cream);
-    padding: 1.5rem;
-    border-radius: 8px;
-    border-left: 4px solid var(--gold);
-    transition: transform 0.2s ease;
-  }
-
-  .feast-card:hover {
-    transform: translateY(-3px);
-  }
-
-  .feast-card.moveable {
-    border-left-color: var(--burgundy);
-  }
-
-  .feast-date {
-    font-family: 'Cinzel', serif;
-    font-size: 0.85rem;
-    color: var(--burgundy);
-    font-weight: 600;
-    margin-bottom: 0.5rem;
-  }
-
-  .feast-card.moveable .feast-date {
-    color: var(--navy);
-    font-style: italic;
-  }
-
-  .feast-card h3 {
-    color: var(--navy);
-    font-size: 1.1rem;
-    margin-bottom: 0.5rem;
-  }
-
-  .feast-card p {
-    font-size: 0.95rem;
-    color: var(--text-dark);
-    opacity: 0.85;
-    margin: 0;
-  }
-
+  /* Seasons Section */
   .seasons-section {
     padding: 5rem 2rem;
     background: var(--cream);
@@ -417,7 +677,7 @@ const seasons = [
 
   .seasons-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 2rem;
     margin-top: 2rem;
     text-align: left;
@@ -441,30 +701,23 @@ const seasons = [
     margin: 0;
   }
 
-  .note-section {
+  /* CTA Section */
+  .cta-section {
     padding: 5rem 2rem;
-    background: var(--white);
-  }
-
-  .note-box {
-    max-width: 700px;
-    margin: 0 auto;
-    background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%);
-    padding: 3rem;
-    border-radius: 12px;
+    background: linear-gradient(135deg, var(--burgundy-dark) 0%, var(--burgundy) 100%);
     text-align: center;
     color: var(--text-light);
   }
 
-  .note-box h3 {
+  .cta-section h2 {
+    font-size: 2.2rem;
     color: var(--gold);
-    font-size: 1.5rem;
-    margin-bottom: 1.5rem;
+    margin-bottom: 1rem;
   }
 
-  .note-box p {
-    margin-bottom: 1.5rem;
-    line-height: 1.8;
+  .cta-section p {
+    font-size: 1.2rem;
+    margin-bottom: 2rem;
     opacity: 0.9;
   }
 
@@ -490,40 +743,34 @@ const seasons = [
     transform: translateY(-2px);
   }
 
-  .btn-outline {
-    background: transparent;
-    color: var(--text-light);
-    border: 2px solid var(--gold);
-  }
-
-  .btn-outline:hover {
-    background: var(--gold);
-    color: var(--navy);
-    transform: translateY(-2px);
-  }
-
-  .cta-section {
-    padding: 5rem 2rem;
-    background: linear-gradient(135deg, var(--burgundy-dark) 0%, var(--burgundy) 100%);
-    text-align: center;
-    color: var(--text-light);
-  }
-
-  .cta-section h2 {
-    font-size: 2.2rem;
-    color: var(--gold);
-    margin-bottom: 1rem;
-  }
-
-  .cta-section p {
-    font-size: 1.2rem;
-    margin-bottom: 2rem;
-    opacity: 0.9;
-  }
-
-  @media (max-width: 768px) {
-    .feasts-grid {
+  /* Responsive */
+  @media (max-width: 900px) {
+    .calendar-section .container {
       grid-template-columns: 1fr;
+    }
+
+    .event-details {
+      margin-top: 1rem;
+    }
+
+    .event-details.hidden {
+      display: none;
+    }
+  }
+
+  @media (max-width: 500px) {
+    .calendar-legend {
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .calendar-day {
+      min-height: 40px;
+    }
+
+    .day-number {
+      font-size: 0.85rem;
     }
   }
 </style>

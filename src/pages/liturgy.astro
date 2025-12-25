@@ -1,0 +1,559 @@
+---
+import Layout from '../layouts/Layout.astro';
+const base = import.meta.env.BASE_URL;
+---
+
+<Layout title="Divine Liturgy & Services">
+  <section class="page-hero">
+    <div class="page-hero-content">
+      <h1>Divine Liturgy</h1>
+      <p>Join us in the ancient worship of the Byzantine tradition</p>
+    </div>
+  </section>
+
+  <section class="schedule-section">
+    <div class="container">
+      <h2>Weekly Schedule</h2>
+      <div class="decorative-line center"></div>
+
+      <div class="schedule-grid">
+        <div class="schedule-card primary">
+          <div class="schedule-day">Sunday</div>
+          <div class="schedule-services">
+            <div class="service">
+              <span class="service-time">8:30 AM</span>
+              <span class="service-name">Matins (Morning Prayer)</span>
+            </div>
+            <div class="service main-service">
+              <span class="service-time">10:00 AM</span>
+              <span class="service-name">Divine Liturgy</span>
+            </div>
+          </div>
+          <div class="schedule-note">
+            Principal celebration of the week. All are welcome!
+          </div>
+        </div>
+
+        <div class="schedule-card">
+          <div class="schedule-day">Saturday</div>
+          <div class="schedule-services">
+            <div class="service">
+              <span class="service-time">4:00 PM</span>
+              <span class="service-name">Great Vespers</span>
+            </div>
+            <div class="service">
+              <span class="service-time">5:00 - 5:50 PM</span>
+              <span class="service-name">Confessions</span>
+            </div>
+          </div>
+          <div class="schedule-note">
+            Evening prayer to prepare for the Lord's Day
+          </div>
+        </div>
+
+        <div class="schedule-card">
+          <div class="schedule-day">Wednesday</div>
+          <div class="schedule-services">
+            <div class="service">
+              <span class="service-time">7:00 PM</span>
+              <span class="service-name">Divine Liturgy or Other Services</span>
+            </div>
+          </div>
+          <div class="schedule-note">
+            Midweek service (check calendar for specifics)
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="confession-section">
+    <div class="container">
+      <div class="confession-content">
+        <div class="confession-info">
+          <h2>Holy Mystery of Confession</h2>
+          <div class="decorative-line"></div>
+          <p>
+            The Sacrament of Confession (also called the Mystery of Repentance) is available
+            at the following times:
+          </p>
+          <ul class="confession-times">
+            <li><strong>Sundays:</strong> 9:00 - 9:30 AM (before Divine Liturgy)</li>
+            <li><strong>Saturdays:</strong> 5:00 - 5:50 PM (after Vespers)</li>
+            <li><strong>After any Divine Liturgy</strong></li>
+            <li><strong>By appointment</strong> — contact Fr. Elias</li>
+          </ul>
+        </div>
+        <div class="confession-quote">
+          <blockquote>
+            "If we confess our sins, He is faithful and just to forgive us our sins and to cleanse us from all unrighteousness."
+          </blockquote>
+          <cite>— 1 John 1:9</cite>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sacraments-section">
+    <div class="container">
+      <h2>Other Holy Mysteries</h2>
+      <div class="decorative-line center"></div>
+
+      <div class="sacraments-grid">
+        <div class="sacrament">
+          <h3>Holy Crowning (Marriage)</h3>
+          <p>
+            Couples wishing to receive the Mystery of Crowning must contact Fr. Elias
+            <strong>at least six months</strong> before the proposed wedding date.
+          </p>
+        </div>
+        <div class="sacrament">
+          <h3>Baptism & Chrismation</h3>
+          <p>
+            For infants and adults seeking initiation into the Church, please contact
+            the parish office to arrange preparation and scheduling.
+          </p>
+        </div>
+        <div class="sacrament">
+          <h3>Holy Anointing</h3>
+          <p>
+            The Anointing of the Sick is available on Holy Wednesday or by request
+            for those who are ill or facing surgery.
+          </p>
+        </div>
+        <div class="sacrament">
+          <h3>Funerals</h3>
+          <p>
+            Contact Fr. Elias immediately when a loved one passes. The Church provides
+            beautiful funeral rites to commend the faithful departed to God's mercy.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="special-section">
+    <div class="container">
+      <h2>Special Celebrations</h2>
+      <div class="decorative-line center"></div>
+      <div class="special-grid">
+        <div class="special-item">
+          <h3>Great Lent (Great Fast)</h3>
+          <p>
+            During the Great Fast, we celebrate the Liturgy of the Presanctified Gifts
+            on Wednesdays and Fridays at 7:00 PM.
+          </p>
+        </div>
+        <div class="special-item">
+          <h3>Christmas Eve</h3>
+          <p>
+            Our parish celebrates the traditional Holy Supper (Svjata Večera) with
+            the twelve meatless dishes on Christmas Eve.
+          </p>
+        </div>
+        <div class="special-item">
+          <h3>Feast of St. Basil</h3>
+          <p>
+            January 1st is the Feast of our patron saint, St. Basil the Great.
+            Join us for a festive celebration.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="visitor-section">
+    <div class="container">
+      <h2>Information for Visitors</h2>
+      <div class="decorative-line center"></div>
+      <div class="visitor-content">
+        <p class="lead">
+          We warmly welcome all visitors! Here are a few things that might be helpful
+          to know about the Byzantine Divine Liturgy:
+        </p>
+        <ul class="visitor-tips">
+          <li>The Divine Liturgy typically lasts about 1 hour and 15 minutes</li>
+          <li>There is more standing in Byzantine worship than in Roman Catholic churches</li>
+          <li>Holy Communion is given under both species (bread and wine) together, using a spoon</li>
+          <li>Only Catholics in good standing may receive Holy Communion</li>
+          <li>Feel free to join in the responses and hymns—books are available</li>
+          <li>Children are welcome! There is a cry room if needed</li>
+        </ul>
+        <p>
+          Please introduce yourself after Liturgy. We'd love to meet you!
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta-section">
+    <div class="container">
+      <h2>Questions?</h2>
+      <p>Contact us for more information about our services.</p>
+      <a href={`${base}contact`} class="btn btn-primary">Contact Us</a>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .page-hero {
+    background: linear-gradient(135deg, var(--burgundy-dark) 0%, var(--burgundy) 50%, var(--navy) 100%);
+    padding: 8rem 2rem 6rem;
+    text-align: center;
+    color: var(--text-light);
+  }
+
+  .page-hero h1 {
+    font-size: clamp(2rem, 6vw, 3.5rem);
+    color: var(--gold);
+    margin-bottom: 1rem;
+  }
+
+  .page-hero p {
+    font-size: 1.3rem;
+    opacity: 0.9;
+  }
+
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 2rem;
+  }
+
+  .decorative-line {
+    width: 80px;
+    height: 3px;
+    background: var(--gold);
+    margin-bottom: 2rem;
+  }
+
+  .decorative-line.center {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .schedule-section {
+    padding: 5rem 2rem;
+    background: var(--cream);
+    text-align: center;
+  }
+
+  .schedule-section h2 {
+    font-size: 2.2rem;
+    color: var(--burgundy);
+    margin-bottom: 1rem;
+  }
+
+  .schedule-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+  }
+
+  .schedule-card {
+    background: var(--white);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    text-align: left;
+  }
+
+  .schedule-card.primary {
+    border: 3px solid var(--gold);
+  }
+
+  .schedule-day {
+    background: var(--navy);
+    color: var(--gold);
+    padding: 1rem 1.5rem;
+    font-family: 'Cinzel', serif;
+    font-size: 1.2rem;
+    font-weight: 600;
+  }
+
+  .schedule-card.primary .schedule-day {
+    background: var(--burgundy);
+  }
+
+  .schedule-services {
+    padding: 1.5rem;
+  }
+
+  .service {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid rgba(0,0,0,0.08);
+  }
+
+  .service:last-child {
+    border-bottom: none;
+  }
+
+  .service-time {
+    font-weight: 600;
+    color: var(--burgundy);
+    font-size: 1.1rem;
+  }
+
+  .service-name {
+    color: var(--text-dark);
+  }
+
+  .main-service {
+    background: rgba(201, 162, 39, 0.1);
+    margin: 0 -1.5rem;
+    padding: 1rem 1.5rem;
+  }
+
+  .main-service .service-time {
+    font-size: 1.3rem;
+    color: var(--burgundy-dark);
+  }
+
+  .main-service .service-name {
+    font-weight: 600;
+  }
+
+  .schedule-note {
+    padding: 1rem 1.5rem;
+    background: var(--cream);
+    font-size: 0.9rem;
+    font-style: italic;
+    color: var(--text-dark);
+  }
+
+  .confession-section {
+    padding: 5rem 2rem;
+    background: var(--white);
+  }
+
+  .confession-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: center;
+  }
+
+  .confession-info h2 {
+    font-size: 2rem;
+    color: var(--burgundy);
+    margin-bottom: 1rem;
+  }
+
+  .confession-info p {
+    margin-bottom: 1.5rem;
+    line-height: 1.8;
+  }
+
+  .confession-times {
+    list-style: none;
+    padding: 0;
+  }
+
+  .confession-times li {
+    padding: 0.75rem 0;
+    border-bottom: 1px solid rgba(0,0,0,0.08);
+    line-height: 1.6;
+  }
+
+  .confession-quote {
+    background: linear-gradient(135deg, var(--burgundy) 0%, var(--burgundy-dark) 100%);
+    padding: 3rem;
+    border-radius: 8px;
+    color: var(--text-light);
+  }
+
+  .confession-quote blockquote {
+    font-size: 1.4rem;
+    font-style: italic;
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+  }
+
+  .confession-quote cite {
+    color: var(--gold);
+    font-style: normal;
+    font-family: 'Cinzel', serif;
+  }
+
+  .sacraments-section {
+    padding: 5rem 2rem;
+    background: var(--cream);
+    text-align: center;
+  }
+
+  .sacraments-section h2 {
+    font-size: 2.2rem;
+    color: var(--burgundy);
+    margin-bottom: 1rem;
+  }
+
+  .sacraments-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+    text-align: left;
+  }
+
+  .sacrament {
+    background: var(--white);
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+  }
+
+  .sacrament h3 {
+    color: var(--navy);
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+  }
+
+  .sacrament p {
+    line-height: 1.7;
+  }
+
+  .special-section {
+    padding: 5rem 2rem;
+    background: var(--white);
+    text-align: center;
+  }
+
+  .special-section h2 {
+    font-size: 2.2rem;
+    color: var(--burgundy);
+    margin-bottom: 1rem;
+  }
+
+  .special-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+    text-align: left;
+  }
+
+  .special-item {
+    padding: 2rem;
+    background: var(--cream);
+    border-radius: 8px;
+    border-left: 4px solid var(--gold);
+  }
+
+  .special-item h3 {
+    color: var(--navy);
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+  }
+
+  .special-item p {
+    line-height: 1.7;
+  }
+
+  .visitor-section {
+    padding: 5rem 2rem;
+    background: var(--cream);
+  }
+
+  .visitor-section h2 {
+    font-size: 2.2rem;
+    color: var(--burgundy);
+    margin-bottom: 1rem;
+    text-align: center;
+  }
+
+  .visitor-content {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  .visitor-content .lead {
+    font-size: 1.2rem;
+    color: var(--burgundy-dark);
+    margin-bottom: 2rem;
+    text-align: center;
+  }
+
+  .visitor-tips {
+    list-style: none;
+    padding: 0;
+    background: var(--white);
+    border-radius: 8px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+  }
+
+  .visitor-tips li {
+    padding: 0.75rem 0;
+    padding-left: 2rem;
+    position: relative;
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+  }
+
+  .visitor-tips li:last-child {
+    border-bottom: none;
+  }
+
+  .visitor-tips li::before {
+    content: '☦';
+    position: absolute;
+    left: 0;
+    color: var(--gold);
+  }
+
+  .visitor-content > p:last-child {
+    text-align: center;
+    font-size: 1.1rem;
+    color: var(--burgundy);
+  }
+
+  .cta-section {
+    padding: 5rem 2rem;
+    background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%);
+    text-align: center;
+    color: var(--text-light);
+  }
+
+  .cta-section h2 {
+    font-size: 2.2rem;
+    color: var(--gold);
+    margin-bottom: 1rem;
+  }
+
+  .cta-section p {
+    font-size: 1.2rem;
+    margin-bottom: 2rem;
+    opacity: 0.9;
+  }
+
+  .btn {
+    display: inline-block;
+    padding: 1rem 2rem;
+    font-family: 'Cinzel', serif;
+    font-size: 0.95rem;
+    letter-spacing: 0.05em;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+  }
+
+  .btn-primary {
+    background: var(--gold);
+    color: var(--navy);
+    border: 2px solid var(--gold);
+  }
+
+  .btn-primary:hover {
+    background: var(--gold-light);
+    border-color: var(--gold-light);
+    transform: translateY(-2px);
+  }
+
+  @media (max-width: 768px) {
+    .confession-content {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

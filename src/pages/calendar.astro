@@ -17,9 +17,12 @@ const base = import.meta.env.BASE_URL;
         <div id="calendar"></div>
       </div>
       <div class="calendar-legend">
-        <div class="legend-item"><span class="legend-dot liturgy"></span> Weekly Services</div>
-        <div class="legend-item"><span class="legend-dot feast"></span> Major Feast</div>
-        <div class="legend-item"><span class="legend-dot patron"></span> Patron Saint</div>
+        <div class="legend-item"><span class="legend-icon">⛪</span> Divine Liturgy</div>
+        <div class="legend-item"><span class="legend-icon">🕯️</span> Vespers</div>
+        <div class="legend-item"><span class="legend-icon">📿</span> Matins</div>
+        <div class="legend-item"><span class="legend-icon">☦️</span> Major Feast</div>
+        <div class="legend-item"><span class="legend-icon">🌹</span> Theotokos Feast</div>
+        <div class="legend-item"><span class="legend-icon">👑</span> Patron Saint</div>
       </div>
     </div>
   </section>
@@ -131,13 +134,13 @@ const base = import.meta.env.BASE_URL;
     // Weekly recurring events
     // Sundays (0)
     events.push({
-      title: 'Divine Liturgy',
+      title: '⛪ Divine Liturgy',
       daysOfWeek: [0],
       startTime: '10:00',
       color: '#1A2744',
     });
     events.push({
-      title: 'Matins',
+      title: '📿 Matins',
       daysOfWeek: [0],
       startTime: '08:30',
       color: '#2A3A5A',
@@ -145,7 +148,7 @@ const base = import.meta.env.BASE_URL;
 
     // Saturdays (6)
     events.push({
-      title: 'Great Vespers',
+      title: '🕯️ Great Vespers',
       daysOfWeek: [6],
       startTime: '16:00',
       color: '#1A2744',
@@ -153,7 +156,7 @@ const base = import.meta.env.BASE_URL;
 
     // Wednesdays (3)
     events.push({
-      title: 'Divine Liturgy',
+      title: '⛪ Divine Liturgy',
       daysOfWeek: [3],
       startTime: '19:00',
       color: '#2A3A5A',
@@ -161,18 +164,18 @@ const base = import.meta.env.BASE_URL;
 
     // Fixed feasts (for current and next year)
     const feasts = [
-      { month: 1, day: 1, title: 'Feast of St. Basil the Great', color: '#722F37', description: 'Our parish patron saint' },
-      { month: 1, day: 6, title: 'Theophany', color: '#C9A227', description: 'Baptism of Our Lord' },
-      { month: 1, day: 7, title: 'Synaxis of St. John the Baptist', color: '#C9A227', description: 'Honoring the Forerunner' },
-      { month: 2, day: 2, title: 'Encounter of Our Lord', color: '#C9A227', description: 'Presentation in the Temple' },
-      { month: 3, day: 25, title: 'Annunciation', color: '#C9A227', description: 'Gabriel announces to Mary' },
-      { month: 8, day: 6, title: 'Transfiguration', color: '#C9A227', description: 'Christ\'s glory on Mt. Tabor' },
-      { month: 8, day: 15, title: 'Dormition of the Theotokos', color: '#C9A227', description: 'Falling asleep of the Virgin' },
-      { month: 9, day: 8, title: 'Nativity of the Theotokos', color: '#C9A227', description: 'Birth of the Virgin Mary' },
-      { month: 9, day: 14, title: 'Exaltation of the Holy Cross', color: '#C9A227', description: 'Finding of the True Cross' },
-      { month: 11, day: 21, title: 'Entrance of the Theotokos', color: '#C9A227', description: 'Mary\'s presentation in Temple' },
-      { month: 12, day: 24, title: 'Christmas Eve - Holy Supper', color: '#C9A227', description: 'Traditional Svjata Večera' },
-      { month: 12, day: 25, title: 'Nativity of Our Lord', color: '#C9A227', description: 'Christmas' },
+      { month: 1, day: 1, title: '👑 Feast of St. Basil the Great', color: '#722F37', description: 'Our parish patron saint' },
+      { month: 1, day: 6, title: '☦️ Theophany', color: '#C9A227', description: 'Baptism of Our Lord' },
+      { month: 1, day: 7, title: '☦️ Synaxis of St. John the Baptist', color: '#C9A227', description: 'Honoring the Forerunner' },
+      { month: 2, day: 2, title: '☦️ Encounter of Our Lord', color: '#C9A227', description: 'Presentation in the Temple' },
+      { month: 3, day: 25, title: '🙏 Annunciation', color: '#C9A227', description: 'Gabriel announces to Mary' },
+      { month: 8, day: 6, title: '✨ Transfiguration', color: '#C9A227', description: 'Christ\'s glory on Mt. Tabor' },
+      { month: 8, day: 15, title: '🌹 Dormition of the Theotokos', color: '#C9A227', description: 'Falling asleep of the Virgin' },
+      { month: 9, day: 8, title: '🌹 Nativity of the Theotokos', color: '#C9A227', description: 'Birth of the Virgin Mary' },
+      { month: 9, day: 14, title: '✝️ Exaltation of the Holy Cross', color: '#C9A227', description: 'Finding of the True Cross' },
+      { month: 11, day: 21, title: '🌹 Entrance of the Theotokos', color: '#C9A227', description: 'Mary\'s presentation in Temple' },
+      { month: 12, day: 24, title: '🍞 Christmas Eve - Holy Supper', color: '#C9A227', description: 'Traditional Svjata Večera' },
+      { month: 12, day: 25, title: '⭐ Nativity of Our Lord', color: '#C9A227', description: 'Christmas' },
     ];
 
     // Add feasts for current and next year
@@ -384,15 +387,9 @@ const base = import.meta.env.BASE_URL;
     gap: 0.5rem;
   }
 
-  .legend-dot {
-    width: 12px;
-    height: 12px;
-    border-radius: 4px;
+  .legend-icon {
+    font-size: 1.1rem;
   }
-
-  .legend-dot.liturgy { background: #1A2744; }
-  .legend-dot.feast { background: #C9A227; }
-  .legend-dot.patron { background: #722F37; }
 
   /* Schedule Section */
   .schedule-section {

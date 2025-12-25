@@ -94,6 +94,37 @@ const base = import.meta.env.BASE_URL;
     </div>
   </section>
 
+  <!-- Patron Saint Section -->
+  <section class="patron-section">
+    <div class="container">
+      <div class="patron-content">
+        <div class="patron-image">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/0/04/Basil_of_Caesarea.jpg" alt="Icon of St. Basil the Great" loading="lazy" />
+          <div class="patron-image-frame"></div>
+        </div>
+        <div class="patron-text">
+          <h2>Our Patron Saint</h2>
+          <div class="decorative-line"></div>
+          <h3>St. Basil the Great</h3>
+          <p class="patron-dates">330 – 379 AD</p>
+          <p class="lead">
+            Bishop of Caesarea, Doctor of the Church, and one of the Cappadocian Fathers,
+            St. Basil is revered as one of the greatest theologians and monastics in Christian history.
+          </p>
+          <p>
+            Known for his care for the poor and his defense of the faith against Arianism,
+            St. Basil established hospitals, hospices, and institutions for the needy. His monastic rule
+            continues to guide Eastern monasticism to this day.
+          </p>
+          <p class="feast-day">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/></svg>
+            Feast Day: January 1st
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- Pastor Section -->
   <section class="pastor-section">
     <div class="container">
@@ -502,10 +533,88 @@ const base = import.meta.env.BASE_URL;
     font-family: 'Cinzel', serif;
   }
 
+  /* Patron Saint Section */
+  .patron-section {
+    padding: 6rem 2rem;
+    background: var(--white);
+  }
+
+  .patron-content {
+    display: grid;
+    grid-template-columns: 350px 1fr;
+    gap: 4rem;
+    align-items: center;
+  }
+
+  .patron-image {
+    position: relative;
+  }
+
+  .patron-image img {
+    width: 100%;
+    border-radius: 8px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+  }
+
+  .patron-image-frame {
+    position: absolute;
+    inset: -12px;
+    border: 3px solid var(--gold);
+    border-radius: 12px;
+    pointer-events: none;
+  }
+
+  .patron-text h2 {
+    font-size: 2.2rem;
+    color: var(--burgundy);
+    margin-bottom: 1rem;
+  }
+
+  .patron-text h3 {
+    font-size: 1.8rem;
+    color: var(--navy);
+    margin-bottom: 0.5rem;
+  }
+
+  .patron-dates {
+    color: var(--gold);
+    font-style: italic;
+    font-size: 1.1rem;
+    margin-bottom: 1.5rem;
+    font-weight: 600;
+  }
+
+  .patron-text .lead {
+    font-size: 1.15rem;
+    color: var(--burgundy-dark);
+    margin-bottom: 1rem;
+  }
+
+  .patron-text p {
+    margin-bottom: 1rem;
+    line-height: 1.8;
+  }
+
+  .feast-day {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: var(--cream);
+    padding: 0.75rem 1.25rem;
+    border-radius: 6px;
+    font-weight: 600;
+    color: var(--burgundy);
+    margin-top: 0.5rem;
+  }
+
+  .feast-day svg {
+    color: var(--gold);
+  }
+
   /* Pastor Section */
   .pastor-section {
     padding: 6rem 2rem;
-    background: var(--white);
+    background: var(--cream);
   }
 
   .pastor-content {
@@ -677,6 +786,25 @@ const base = import.meta.env.BASE_URL;
     .welcome-image {
       max-width: 400px;
       margin: 0 auto;
+    }
+
+    .patron-content {
+      grid-template-columns: 1fr;
+      text-align: center;
+    }
+
+    .patron-image {
+      max-width: 300px;
+      margin: 0 auto;
+    }
+
+    .patron-text .decorative-line {
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .feast-day {
+      justify-content: center;
     }
   }
 

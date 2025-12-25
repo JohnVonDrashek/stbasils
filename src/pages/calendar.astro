@@ -14,36 +14,12 @@ const base = import.meta.env.BASE_URL;
   <section class="calendar-section">
     <div class="container">
       <div class="calendar-wrapper">
-        <div class="calendar-header">
-          <button id="prevMonth" class="nav-btn" aria-label="Previous month">&#8249;</button>
-          <h2 id="currentMonth">December 2024</h2>
-          <button id="nextMonth" class="nav-btn" aria-label="Next month">&#8250;</button>
-        </div>
-
-        <div class="calendar-grid">
-          <div class="calendar-weekdays">
-            <div>Sun</div>
-            <div>Mon</div>
-            <div>Tue</div>
-            <div>Wed</div>
-            <div>Thu</div>
-            <div>Fri</div>
-            <div>Sat</div>
-          </div>
-          <div id="calendarDays" class="calendar-days"></div>
-        </div>
-
-        <div class="calendar-legend">
-          <div class="legend-item"><span class="legend-dot liturgy"></span> Weekly Services</div>
-          <div class="legend-item"><span class="legend-dot feast"></span> Major Feast</div>
-          <div class="legend-item"><span class="legend-dot patron"></span> Patron Saint</div>
-        </div>
+        <div id="calendar"></div>
       </div>
-
-      <div id="eventDetails" class="event-details hidden">
-        <button id="closeEvents" class="close-btn" aria-label="Close">&times;</button>
-        <h3 id="eventDate">December 25</h3>
-        <div id="eventList"></div>
+      <div class="calendar-legend">
+        <div class="legend-item"><span class="legend-dot liturgy"></span> Weekly Services</div>
+        <div class="legend-item"><span class="legend-dot feast"></span> Major Feast</div>
+        <div class="legend-item"><span class="legend-dot patron"></span> Patron Saint</div>
       </div>
     </div>
   </section>
@@ -132,176 +108,215 @@ const base = import.meta.env.BASE_URL;
 </Layout>
 
 <script>
-  // Event data
-  const events: Record<string, Array<{title: string, time: string, type: string, description?: string}>> = {
-    // Fixed feasts (month-day format)
-    "1-1": [{ title: "Feast of St. Basil the Great", time: "10:00 AM", type: "patron", description: "Our parish patron saint - Circumcision of Our Lord" }],
-    "1-6": [{ title: "Theophany (Epiphany)", time: "10:00 AM", type: "feast", description: "Baptism of Our Lord in the Jordan River" }],
-    "1-7": [{ title: "Synaxis of St. John the Baptist", time: "10:00 AM", type: "feast", description: "Honoring the Forerunner of Christ" }],
-    "2-2": [{ title: "Encounter of Our Lord", time: "10:00 AM", type: "feast", description: "Presentation of Christ in the Temple" }],
-    "3-25": [{ title: "Annunciation", time: "10:00 AM", type: "feast", description: "The Angel Gabriel announces to Mary" }],
-    "8-6": [{ title: "Transfiguration of Our Lord", time: "10:00 AM", type: "feast", description: "Christ's glory revealed on Mount Tabor" }],
-    "8-15": [{ title: "Dormition of the Theotokos", time: "10:00 AM", type: "feast", description: "The falling asleep of the Virgin Mary" }],
-    "9-8": [{ title: "Nativity of the Theotokos", time: "10:00 AM", type: "feast", description: "Birth of the Blessed Virgin Mary" }],
-    "9-14": [{ title: "Exaltation of the Holy Cross", time: "10:00 AM", type: "feast", description: "Finding of the True Cross" }],
-    "11-21": [{ title: "Entrance of the Theotokos", time: "10:00 AM", type: "feast", description: "Mary's presentation in the Temple" }],
-    "12-25": [{ title: "Nativity of Our Lord", time: "10:00 AM", type: "feast", description: "The birth of Jesus Christ - Christmas" }],
-    "12-24": [{ title: "Christmas Eve - Holy Supper", time: "Evening", type: "feast", description: "Traditional Svjata Večera with twelve meatless dishes" }],
-  };
+  import { Calendar } from '@fullcalendar/core';
+  import dayGridPlugin from '@fullcalendar/daygrid';
+  import listPlugin from '@fullcalendar/list';
 
-  const monthNames = ["January", "February", "March", "April", "May", "June",
-                      "July", "August", "September", "October", "November", "December"];
+  document.addEventListener('DOMContentLoaded', () => {
+    const calendarEl = document.getElementById('calendar');
+    if (!calendarEl) return;
 
-  let currentDate = new Date();
-  let currentMonth = currentDate.getMonth();
-  let currentYear = currentDate.getFullYear();
+    // Generate recurring events for the year
+    const currentYear = new Date().getFullYear();
+    const events: Array<{
+      title: string;
+      start?: string;
+      daysOfWeek?: number[];
+      startTime?: string;
+      color: string;
+      textColor?: string;
+      extendedProps?: { description: string };
+    }> = [];
 
-  function getDaysInMonth(month: number, year: number): number {
-    return new Date(year, month + 1, 0).getDate();
-  }
+    // Weekly recurring events
+    // Sundays (0)
+    events.push({
+      title: 'Divine Liturgy',
+      daysOfWeek: [0],
+      startTime: '10:00',
+      color: '#1A2744',
+    });
+    events.push({
+      title: 'Matins',
+      daysOfWeek: [0],
+      startTime: '08:30',
+      color: '#2A3A5A',
+    });
 
-  function getFirstDayOfMonth(month: number, year: number): number {
-    return new Date(year, month, 1).getDay();
-  }
+    // Saturdays (6)
+    events.push({
+      title: 'Great Vespers',
+      daysOfWeek: [6],
+      startTime: '16:00',
+      color: '#1A2744',
+    });
 
-  function getEventsForDate(day: number, month: number, year: number): Array<{title: string, time: string, type: string, description?: string}> {
-    const dateEvents: Array<{title: string, time: string, type: string, description?: string}> = [];
-    const date = new Date(year, month, day);
-    const dayOfWeek = date.getDay();
+    // Wednesdays (3)
+    events.push({
+      title: 'Divine Liturgy',
+      daysOfWeek: [3],
+      startTime: '19:00',
+      color: '#2A3A5A',
+    });
 
-    // Add recurring weekly events
-    if (dayOfWeek === 0) { // Sunday
-      dateEvents.push({ title: "Matins", time: "8:30 AM", type: "liturgy" });
-      dateEvents.push({ title: "Divine Liturgy", time: "10:00 AM", type: "liturgy" });
-      dateEvents.push({ title: "Confessions", time: "9:00-9:30 AM", type: "liturgy" });
-    }
-    if (dayOfWeek === 6) { // Saturday
-      dateEvents.push({ title: "Great Vespers", time: "4:00 PM", type: "liturgy" });
-      dateEvents.push({ title: "Confessions", time: "5:00-5:50 PM", type: "liturgy" });
-    }
-    if (dayOfWeek === 3) { // Wednesday
-      dateEvents.push({ title: "Divine Liturgy", time: "7:00 PM", type: "liturgy" });
-    }
+    // Fixed feasts (for current and next year)
+    const feasts = [
+      { month: 1, day: 1, title: 'Feast of St. Basil the Great', color: '#722F37', description: 'Our parish patron saint' },
+      { month: 1, day: 6, title: 'Theophany', color: '#C9A227', description: 'Baptism of Our Lord' },
+      { month: 1, day: 7, title: 'Synaxis of St. John the Baptist', color: '#C9A227', description: 'Honoring the Forerunner' },
+      { month: 2, day: 2, title: 'Encounter of Our Lord', color: '#C9A227', description: 'Presentation in the Temple' },
+      { month: 3, day: 25, title: 'Annunciation', color: '#C9A227', description: 'Gabriel announces to Mary' },
+      { month: 8, day: 6, title: 'Transfiguration', color: '#C9A227', description: 'Christ\'s glory on Mt. Tabor' },
+      { month: 8, day: 15, title: 'Dormition of the Theotokos', color: '#C9A227', description: 'Falling asleep of the Virgin' },
+      { month: 9, day: 8, title: 'Nativity of the Theotokos', color: '#C9A227', description: 'Birth of the Virgin Mary' },
+      { month: 9, day: 14, title: 'Exaltation of the Holy Cross', color: '#C9A227', description: 'Finding of the True Cross' },
+      { month: 11, day: 21, title: 'Entrance of the Theotokos', color: '#C9A227', description: 'Mary\'s presentation in Temple' },
+      { month: 12, day: 24, title: 'Christmas Eve - Holy Supper', color: '#C9A227', description: 'Traditional Svjata Večera' },
+      { month: 12, day: 25, title: 'Nativity of Our Lord', color: '#C9A227', description: 'Christmas' },
+    ];
 
-    // Add fixed feasts
-    const key = `${month + 1}-${day}`;
-    if (events[key]) {
-      dateEvents.push(...events[key]);
-    }
-
-    return dateEvents;
-  }
-
-  function renderCalendar(): void {
-    const calendarDays = document.getElementById('calendarDays');
-    const currentMonthEl = document.getElementById('currentMonth');
-
-    if (!calendarDays || !currentMonthEl) return;
-
-    currentMonthEl.textContent = `${monthNames[currentMonth]} ${currentYear}`;
-
-    const daysInMonth = getDaysInMonth(currentMonth, currentYear);
-    const firstDay = getFirstDayOfMonth(currentMonth, currentYear);
-    const today = new Date();
-
-    let html = '';
-
-    // Empty cells for days before the first day of the month
-    for (let i = 0; i < firstDay; i++) {
-      html += '<div class="calendar-day empty"></div>';
-    }
-
-    // Days of the month
-    for (let day = 1; day <= daysInMonth; day++) {
-      const dayEvents = getEventsForDate(day, currentMonth, currentYear);
-      const isToday = day === today.getDate() &&
-                      currentMonth === today.getMonth() &&
-                      currentYear === today.getFullYear();
-
-      let classes = 'calendar-day';
-      if (isToday) classes += ' today';
-      if (dayEvents.length > 0) classes += ' has-events';
-
-      // Check for event types
-      const hasLiturgy = dayEvents.some(e => e.type === 'liturgy');
-      const hasFeast = dayEvents.some(e => e.type === 'feast');
-      const hasPatron = dayEvents.some(e => e.type === 'patron');
-
-      html += `<div class="${classes}" data-day="${day}">
-        <span class="day-number">${day}</span>
-        <div class="event-dots">
-          ${hasLiturgy ? '<span class="dot liturgy"></span>' : ''}
-          ${hasFeast ? '<span class="dot feast"></span>' : ''}
-          ${hasPatron ? '<span class="dot patron"></span>' : ''}
-        </div>
-      </div>`;
-    }
-
-    calendarDays.innerHTML = html;
-
-    // Add click handlers
-    document.querySelectorAll('.calendar-day:not(.empty)').forEach(dayEl => {
-      dayEl.addEventListener('click', () => {
-        const day = parseInt((dayEl as HTMLElement).dataset.day || '0');
-        showEventDetails(day);
+    // Add feasts for current and next year
+    [currentYear, currentYear + 1].forEach(year => {
+      feasts.forEach(feast => {
+        const month = String(feast.month).padStart(2, '0');
+        const day = String(feast.day).padStart(2, '0');
+        events.push({
+          title: feast.title,
+          start: `${year}-${month}-${day}`,
+          color: feast.color,
+          textColor: feast.color === '#C9A227' ? '#1A2744' : '#fff',
+          extendedProps: { description: feast.description },
+        });
       });
     });
-  }
 
-  function showEventDetails(day: number): void {
-    const eventDetails = document.getElementById('eventDetails');
-    const eventDate = document.getElementById('eventDate');
-    const eventList = document.getElementById('eventList');
+    const calendar = new Calendar(calendarEl, {
+      plugins: [dayGridPlugin, listPlugin],
+      initialView: 'dayGridMonth',
+      headerToolbar: {
+        left: 'prev,next today',
+        center: 'title',
+        right: 'dayGridMonth,listMonth'
+      },
+      buttonText: {
+        today: 'Today',
+        month: 'Month',
+        list: 'List'
+      },
+      events: events,
+      eventClick: (info) => {
+        const desc = info.event.extendedProps.description;
+        if (desc) {
+          alert(`${info.event.title}\n\n${desc}`);
+        }
+      },
+      height: 'auto',
+      fixedWeekCount: false,
+    });
 
-    if (!eventDetails || !eventDate || !eventList) return;
-
-    const dayEvents = getEventsForDate(day, currentMonth, currentYear);
-
-    eventDate.textContent = `${monthNames[currentMonth]} ${day}, ${currentYear}`;
-
-    if (dayEvents.length === 0) {
-      eventList.innerHTML = '<p class="no-events">No scheduled events</p>';
-    } else {
-      eventList.innerHTML = dayEvents.map(event => `
-        <div class="event-item ${event.type}">
-          <div class="event-time">${event.time}</div>
-          <div class="event-info">
-            <div class="event-title">${event.title}</div>
-            ${event.description ? `<div class="event-desc">${event.description}</div>` : ''}
-          </div>
-        </div>
-      `).join('');
-    }
-
-    eventDetails.classList.remove('hidden');
-  }
-
-  // Navigation
-  document.getElementById('prevMonth')?.addEventListener('click', () => {
-    currentMonth--;
-    if (currentMonth < 0) {
-      currentMonth = 11;
-      currentYear--;
-    }
-    renderCalendar();
+    calendar.render();
   });
-
-  document.getElementById('nextMonth')?.addEventListener('click', () => {
-    currentMonth++;
-    if (currentMonth > 11) {
-      currentMonth = 0;
-      currentYear++;
-    }
-    renderCalendar();
-  });
-
-  document.getElementById('closeEvents')?.addEventListener('click', () => {
-    document.getElementById('eventDetails')?.classList.add('hidden');
-  });
-
-  // Initial render
-  renderCalendar();
 </script>
+
+<style is:global>
+  /* FullCalendar Theme Overrides */
+  .fc {
+    --fc-border-color: #E8D48A;
+    --fc-button-bg-color: #1A2744;
+    --fc-button-border-color: #1A2744;
+    --fc-button-hover-bg-color: #2A3A5A;
+    --fc-button-hover-border-color: #2A3A5A;
+    --fc-button-active-bg-color: #722F37;
+    --fc-button-active-border-color: #722F37;
+    --fc-today-bg-color: rgba(201, 162, 39, 0.15);
+    --fc-event-border-color: transparent;
+    --fc-page-bg-color: #fff;
+    font-family: 'Cormorant Garamond', Georgia, serif;
+  }
+
+  .fc .fc-toolbar-title {
+    font-family: 'Cinzel', serif;
+    color: #722F37;
+    font-size: 1.5rem;
+  }
+
+  .fc .fc-button {
+    font-family: 'Cinzel', serif;
+    font-size: 0.85rem;
+    padding: 0.5rem 1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .fc .fc-col-header-cell-cushion {
+    font-family: 'Cinzel', serif;
+    color: #1A2744;
+    font-weight: 600;
+    padding: 0.75rem;
+  }
+
+  .fc .fc-daygrid-day-number {
+    color: #2C2C2C;
+    font-weight: 500;
+    padding: 0.5rem;
+  }
+
+  .fc .fc-daygrid-day.fc-day-today .fc-daygrid-day-number {
+    background: #C9A227;
+    color: #1A2744;
+    border-radius: 50%;
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .fc .fc-event {
+    border-radius: 4px;
+    padding: 2px 4px;
+    font-size: 0.8rem;
+    cursor: pointer;
+  }
+
+  .fc .fc-daygrid-event-dot {
+    border-color: currentColor;
+  }
+
+  .fc .fc-list-event:hover td {
+    background-color: rgba(201, 162, 39, 0.1);
+  }
+
+  .fc .fc-list-day-cushion {
+    background: #1A2744;
+    color: #C9A227;
+    font-family: 'Cinzel', serif;
+  }
+
+  .fc-theme-standard td, .fc-theme-standard th {
+    border-color: #F5F0E8;
+  }
+
+  .fc .fc-scrollgrid {
+    border-color: #E8D48A;
+  }
+
+  @media (max-width: 768px) {
+    .fc .fc-toolbar {
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .fc .fc-toolbar-title {
+      font-size: 1.2rem;
+    }
+
+    .fc .fc-button {
+      padding: 0.4rem 0.6rem;
+      font-size: 0.75rem;
+    }
+  }
+</style>
 
 <style>
   .page-hero {
@@ -346,138 +361,21 @@ const base = import.meta.env.BASE_URL;
     background: var(--cream);
   }
 
-  .calendar-section .container {
-    display: grid;
-    grid-template-columns: 1fr 350px;
-    gap: 2rem;
-    align-items: start;
-  }
-
   .calendar-wrapper {
     background: var(--white);
     border-radius: 12px;
     box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    padding: 1.5rem;
     overflow: hidden;
   }
-
-  .calendar-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 1.5rem 2rem;
-    background: var(--navy);
-  }
-
-  .calendar-header h2 {
-    color: var(--gold);
-    font-size: 1.5rem;
-    margin: 0;
-  }
-
-  .nav-btn {
-    background: transparent;
-    border: 2px solid var(--gold);
-    color: var(--gold);
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    font-size: 1.5rem;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .nav-btn:hover {
-    background: var(--gold);
-    color: var(--navy);
-  }
-
-  .calendar-grid {
-    padding: 1rem;
-  }
-
-  .calendar-weekdays {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    text-align: center;
-    font-family: 'Cinzel', serif;
-    font-size: 0.85rem;
-    color: var(--burgundy);
-    padding: 0.75rem 0;
-    border-bottom: 2px solid var(--cream);
-  }
-
-  .calendar-days {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    gap: 4px;
-    padding-top: 0.5rem;
-  }
-
-  .calendar-day {
-    aspect-ratio: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    position: relative;
-    min-height: 50px;
-  }
-
-  .calendar-day:not(.empty):hover {
-    background: var(--cream);
-  }
-
-  .calendar-day.empty {
-    cursor: default;
-  }
-
-  .calendar-day.today {
-    background: var(--navy);
-  }
-
-  .calendar-day.today .day-number {
-    color: var(--gold);
-    font-weight: 700;
-  }
-
-  .calendar-day.has-events {
-    font-weight: 600;
-  }
-
-  .day-number {
-    font-size: 1rem;
-    color: var(--text-dark);
-  }
-
-  .event-dots {
-    display: flex;
-    gap: 3px;
-    margin-top: 4px;
-  }
-
-  .dot {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-  }
-
-  .dot.liturgy { background: var(--navy); }
-  .dot.feast { background: var(--gold); }
-  .dot.patron { background: var(--burgundy); }
 
   .calendar-legend {
     display: flex;
     justify-content: center;
     gap: 2rem;
-    padding: 1rem;
-    border-top: 1px solid var(--cream);
-    font-size: 0.85rem;
+    padding: 1.5rem;
+    font-size: 0.9rem;
+    flex-wrap: wrap;
   }
 
   .legend-item {
@@ -487,97 +385,14 @@ const base = import.meta.env.BASE_URL;
   }
 
   .legend-dot {
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
+    width: 12px;
+    height: 12px;
+    border-radius: 4px;
   }
 
-  .legend-dot.liturgy { background: var(--navy); }
-  .legend-dot.feast { background: var(--gold); }
-  .legend-dot.patron { background: var(--burgundy); }
-
-  /* Event Details Panel */
-  .event-details {
-    background: var(--white);
-    border-radius: 12px;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-    padding: 1.5rem;
-    position: relative;
-  }
-
-  .event-details.hidden {
-    display: none;
-  }
-
-  .close-btn {
-    position: absolute;
-    top: 1rem;
-    right: 1rem;
-    background: none;
-    border: none;
-    font-size: 1.5rem;
-    color: var(--text-dark);
-    cursor: pointer;
-    opacity: 0.5;
-    transition: opacity 0.2s;
-  }
-
-  .close-btn:hover {
-    opacity: 1;
-  }
-
-  .event-details h3 {
-    color: var(--burgundy);
-    font-size: 1.3rem;
-    margin-bottom: 1.5rem;
-    padding-right: 2rem;
-  }
-
-  .event-item {
-    display: flex;
-    gap: 1rem;
-    padding: 1rem;
-    border-radius: 8px;
-    margin-bottom: 0.75rem;
-    background: var(--cream);
-    border-left: 4px solid var(--navy);
-  }
-
-  .event-item.feast {
-    border-left-color: var(--gold);
-    background: rgba(201, 162, 39, 0.1);
-  }
-
-  .event-item.patron {
-    border-left-color: var(--burgundy);
-    background: rgba(114, 47, 55, 0.1);
-  }
-
-  .event-time {
-    font-weight: 600;
-    color: var(--burgundy);
-    font-size: 0.9rem;
-    white-space: nowrap;
-  }
-
-  .event-title {
-    font-weight: 600;
-    color: var(--navy);
-  }
-
-  .event-desc {
-    font-size: 0.9rem;
-    color: var(--text-dark);
-    opacity: 0.8;
-    margin-top: 0.25rem;
-  }
-
-  .no-events {
-    text-align: center;
-    color: var(--text-dark);
-    opacity: 0.6;
-    font-style: italic;
-  }
+  .legend-dot.liturgy { background: #1A2744; }
+  .legend-dot.feast { background: #C9A227; }
+  .legend-dot.patron { background: #722F37; }
 
   /* Schedule Section */
   .schedule-section {
@@ -741,36 +556,5 @@ const base = import.meta.env.BASE_URL;
     background: var(--gold-light);
     border-color: var(--gold-light);
     transform: translateY(-2px);
-  }
-
-  /* Responsive */
-  @media (max-width: 900px) {
-    .calendar-section .container {
-      grid-template-columns: 1fr;
-    }
-
-    .event-details {
-      margin-top: 1rem;
-    }
-
-    .event-details.hidden {
-      display: none;
-    }
-  }
-
-  @media (max-width: 500px) {
-    .calendar-legend {
-      flex-direction: column;
-      align-items: center;
-      gap: 0.5rem;
-    }
-
-    .calendar-day {
-      min-height: 40px;
-    }
-
-    .day-number {
-      font-size: 0.85rem;
-    }
   }
 </style>

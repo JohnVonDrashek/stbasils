@@ -27,6 +27,21 @@ const base = import.meta.env.BASE_URL;
     </div>
   </section>
 
+  <!-- Event Detail Modal -->
+  <div id="event-modal" class="event-modal">
+    <div class="modal-backdrop"></div>
+    <div class="modal-content">
+      <button class="modal-close" aria-label="Close">&times;</button>
+      <div class="modal-icon" id="modal-icon"></div>
+      <h3 class="modal-title" id="modal-title"></h3>
+      <div class="modal-details">
+        <p class="modal-time" id="modal-time"></p>
+        <p class="modal-description" id="modal-description"></p>
+      </div>
+      <div class="modal-actions" id="modal-actions"></div>
+    </div>
+  </div>
+
   <section class="schedule-section">
     <div class="container">
       <h2>Weekly Schedule</h2>
@@ -119,6 +134,71 @@ const base = import.meta.env.BASE_URL;
     const calendarEl = document.getElementById('calendar');
     if (!calendarEl) return;
 
+    const base = '/stbasils/';
+
+    // Modal elements
+    const modal = document.getElementById('event-modal');
+    const modalIcon = document.getElementById('modal-icon');
+    const modalTitle = document.getElementById('modal-title');
+    const modalTime = document.getElementById('modal-time');
+    const modalDescription = document.getElementById('modal-description');
+    const modalActions = document.getElementById('modal-actions');
+    const modalClose = document.querySelector('.modal-close');
+    const modalBackdrop = document.querySelector('.modal-backdrop');
+
+    function openModal(event: { title: string; start: Date | null; extendedProps: Record<string, unknown> }) {
+      const props = event.extendedProps;
+      const icon = (props.icon as string) || '📅';
+      const description = (props.description as string) || '';
+      const link = (props.link as string) || '';
+      const linkText = (props.linkText as string) || 'Learn More';
+
+      if (modalIcon) modalIcon.textContent = icon;
+      if (modalTitle) modalTitle.textContent = event.title.replace(/^[^\s]+\s/, ''); // Remove emoji from title
+
+      // Format time
+      if (modalTime && event.start) {
+        const options: Intl.DateTimeFormatOptions = {
+          weekday: 'long',
+          month: 'long',
+          day: 'numeric',
+          hour: 'numeric',
+          minute: '2-digit'
+        };
+        modalTime.textContent = event.start.toLocaleString('en-US', options);
+      } else if (modalTime) {
+        modalTime.textContent = '';
+      }
+
+      if (modalDescription) modalDescription.textContent = description;
+
+      // Add action buttons
+      if (modalActions) {
+        modalActions.innerHTML = '';
+        if (link) {
+          const btn = document.createElement('a');
+          btn.href = link;
+          btn.className = 'modal-btn';
+          btn.textContent = linkText;
+          modalActions.appendChild(btn);
+        }
+      }
+
+      modal?.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal() {
+      modal?.classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    modalClose?.addEventListener('click', closeModal);
+    modalBackdrop?.addEventListener('click', closeModal);
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeModal();
+    });
+
     // Generate recurring events for the year
     const currentYear = new Date().getFullYear();
     const events: Array<{
@@ -128,7 +208,12 @@ const base = import.meta.env.BASE_URL;
       startTime?: string;
       color: string;
       textColor?: string;
-      extendedProps?: { description: string };
+      extendedProps: {
+        icon: string;
+        description: string;
+        link?: string;
+        linkText?: string;
+      };
     }> = [];
 
     // Weekly recurring events
@@ -138,12 +223,24 @@ const base = import.meta.env.BASE_URL;
       daysOfWeek: [0],
       startTime: '10:00',
       color: '#1A2744',
+      extendedProps: {
+        icon: '⛪',
+        description: 'The Divine Liturgy of St. John Chrysostom is the principal worship service of the Byzantine Church. Confessions available from 9:00-9:30 AM.',
+        link: `${base}liturgy`,
+        linkText: 'View Liturgy Details',
+      },
     });
     events.push({
       title: '📿 Matins',
       daysOfWeek: [0],
       startTime: '08:30',
       color: '#2A3A5A',
+      extendedProps: {
+        icon: '📿',
+        description: 'Morning prayer service preparing the faithful for the Divine Liturgy. Features psalms, hymns, and scripture readings.',
+        link: `${base}liturgy`,
+        linkText: 'View Service Times',
+      },
     });
 
     // Saturdays (6)
@@ -152,6 +249,12 @@ const base = import.meta.env.BASE_URL;
       daysOfWeek: [6],
       startTime: '16:00',
       color: '#1A2744',
+      extendedProps: {
+        icon: '🕯️',
+        description: 'Evening prayer service welcoming the Lord\'s Day. A beautiful service of psalms, hymns, and evening prayers. Confessions available afterward.',
+        link: `${base}liturgy`,
+        linkText: 'View Service Times',
+      },
     });
 
     // Wednesdays (3)
@@ -160,22 +263,28 @@ const base = import.meta.env.BASE_URL;
       daysOfWeek: [3],
       startTime: '19:00',
       color: '#2A3A5A',
+      extendedProps: {
+        icon: '⛪',
+        description: 'Weekday evening Divine Liturgy. Check the schedule for specific dates.',
+        link: `${base}liturgy`,
+        linkText: 'View Liturgy Details',
+      },
     });
 
     // Fixed feasts (for current and next year)
     const feasts = [
-      { month: 1, day: 1, title: '👑 Feast of St. Basil the Great', color: '#722F37', description: 'Our parish patron saint' },
-      { month: 1, day: 6, title: '☦️ Theophany', color: '#C9A227', description: 'Baptism of Our Lord' },
-      { month: 1, day: 7, title: '☦️ Synaxis of St. John the Baptist', color: '#C9A227', description: 'Honoring the Forerunner' },
-      { month: 2, day: 2, title: '☦️ Encounter of Our Lord', color: '#C9A227', description: 'Presentation in the Temple' },
-      { month: 3, day: 25, title: '🙏 Annunciation', color: '#C9A227', description: 'Gabriel announces to Mary' },
-      { month: 8, day: 6, title: '✨ Transfiguration', color: '#C9A227', description: 'Christ\'s glory on Mt. Tabor' },
-      { month: 8, day: 15, title: '🌹 Dormition of the Theotokos', color: '#C9A227', description: 'Falling asleep of the Virgin' },
-      { month: 9, day: 8, title: '🌹 Nativity of the Theotokos', color: '#C9A227', description: 'Birth of the Virgin Mary' },
-      { month: 9, day: 14, title: '✝️ Exaltation of the Holy Cross', color: '#C9A227', description: 'Finding of the True Cross' },
-      { month: 11, day: 21, title: '🌹 Entrance of the Theotokos', color: '#C9A227', description: 'Mary\'s presentation in Temple' },
-      { month: 12, day: 24, title: '🍞 Christmas Eve - Holy Supper', color: '#C9A227', description: 'Traditional Svjata Večera' },
-      { month: 12, day: 25, title: '⭐ Nativity of Our Lord', color: '#C9A227', description: 'Christmas' },
+      { month: 1, day: 1, icon: '👑', title: '👑 Feast of St. Basil the Great', color: '#722F37', description: 'Our parish patron saint, one of the greatest Fathers of the Church. St. Basil is known for his theological writings, monastic rule, and care for the poor.' },
+      { month: 1, day: 6, icon: '☦️', title: '☦️ Theophany', color: '#C9A227', description: 'The Baptism of Our Lord in the Jordan River by St. John the Baptist. One of the Twelve Great Feasts. Blessing of water takes place after the Divine Liturgy.' },
+      { month: 1, day: 7, icon: '☦️', title: '☦️ Synaxis of St. John the Baptist', color: '#C9A227', description: 'We honor St. John the Baptist, the Forerunner of Christ, the day after Theophany.' },
+      { month: 2, day: 2, icon: '☦️', title: '☦️ Encounter of Our Lord', color: '#C9A227', description: 'The Presentation of Christ in the Temple, 40 days after His birth. Simeon and Anna recognize the Messiah. Blessing of candles.' },
+      { month: 3, day: 25, icon: '🙏', title: '🙏 Annunciation', color: '#C9A227', description: 'The Archangel Gabriel announces to the Virgin Mary that she will conceive and bear the Son of God. One of the Twelve Great Feasts.' },
+      { month: 8, day: 6, icon: '✨', title: '✨ Transfiguration', color: '#C9A227', description: 'Christ reveals His divine glory to Peter, James, and John on Mount Tabor. Blessing of fruits and grapes.' },
+      { month: 8, day: 15, icon: '🌹', title: '🌹 Dormition of the Theotokos', color: '#C9A227', description: 'The "falling asleep" of the Virgin Mary and her bodily assumption into heaven. One of the greatest feasts of the Church year.' },
+      { month: 9, day: 8, icon: '🌹', title: '🌹 Nativity of the Theotokos', color: '#C9A227', description: 'The birth of the Blessed Virgin Mary to Sts. Joachim and Anna. The beginning of the Church liturgical year.' },
+      { month: 9, day: 14, icon: '✝️', title: '✝️ Exaltation of the Holy Cross', color: '#C9A227', description: 'Commemorates the finding of the True Cross by St. Helena in Jerusalem and its elevation for veneration by all the faithful.' },
+      { month: 11, day: 21, icon: '🌹', title: '🌹 Entrance of the Theotokos', color: '#C9A227', description: 'The young Virgin Mary is presented in the Temple by her parents, Joachim and Anna, and dedicated to God\'s service.' },
+      { month: 12, day: 24, icon: '🍞', title: '🍞 Christmas Eve - Holy Supper', color: '#C9A227', description: 'The traditional Svjata Večera (Holy Supper) - a meatless meal of twelve dishes representing the twelve apostles. A beautiful family tradition.' },
+      { month: 12, day: 25, icon: '⭐', title: '⭐ Nativity of Our Lord', color: '#C9A227', description: 'Christmas - the birth of Jesus Christ in Bethlehem. The Divine Liturgy celebrates God becoming man for our salvation.' },
     ];
 
     // Add feasts for current and next year
@@ -188,7 +297,10 @@ const base = import.meta.env.BASE_URL;
           start: `${year}-${month}-${day}`,
           color: feast.color,
           textColor: feast.color === '#C9A227' ? '#1A2744' : '#fff',
-          extendedProps: { description: feast.description },
+          extendedProps: {
+            icon: feast.icon,
+            description: feast.description,
+          },
         });
       });
     });
@@ -208,10 +320,8 @@ const base = import.meta.env.BASE_URL;
       },
       events: events,
       eventClick: (info) => {
-        const desc = info.event.extendedProps.description;
-        if (desc) {
-          alert(`${info.event.title}\n\n${desc}`);
-        }
+        info.jsEvent.preventDefault();
+        openModal(info.event);
       },
       height: 'auto',
       fixedWeekCount: false,
@@ -553,5 +663,154 @@ const base = import.meta.env.BASE_URL;
     background: var(--gold-light);
     border-color: var(--gold-light);
     transform: translateY(-2px);
+  }
+
+  /* Event Modal */
+  .event-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 2000;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+  }
+
+  .event-modal.open {
+    display: flex;
+  }
+
+  .modal-backdrop {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(26, 39, 68, 0.85);
+    backdrop-filter: blur(4px);
+    animation: fadeIn 0.2s ease;
+  }
+
+  .modal-content {
+    position: relative;
+    background: var(--white);
+    border-radius: 16px;
+    padding: 2.5rem;
+    max-width: 480px;
+    width: 100%;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    animation: slideUp 0.3s ease;
+    text-align: center;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  @keyframes slideUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .modal-close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    width: 36px;
+    height: 36px;
+    border: none;
+    background: var(--cream);
+    border-radius: 50%;
+    font-size: 1.5rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-dark);
+    transition: all 0.2s ease;
+    line-height: 1;
+  }
+
+  .modal-close:hover {
+    background: var(--burgundy);
+    color: var(--white);
+  }
+
+  .modal-icon {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+    line-height: 1;
+  }
+
+  .modal-title {
+    font-family: 'Cinzel', serif;
+    font-size: 1.6rem;
+    color: var(--burgundy);
+    margin-bottom: 1rem;
+    line-height: 1.3;
+  }
+
+  .modal-details {
+    margin-bottom: 1.5rem;
+  }
+
+  .modal-time {
+    font-weight: 600;
+    color: var(--navy);
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+  }
+
+  .modal-description {
+    color: var(--text-dark);
+    line-height: 1.7;
+    font-size: 1.05rem;
+  }
+
+  .modal-actions {
+    margin-top: 1.5rem;
+  }
+
+  .modal-btn {
+    display: inline-block;
+    padding: 0.875rem 2rem;
+    background: var(--burgundy);
+    color: var(--white);
+    font-family: 'Cinzel', serif;
+    font-size: 0.9rem;
+    letter-spacing: 0.05em;
+    border-radius: 6px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+  }
+
+  .modal-btn:hover {
+    background: var(--burgundy-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(114, 47, 55, 0.3);
+  }
+
+  @media (max-width: 480px) {
+    .modal-content {
+      padding: 2rem 1.5rem;
+    }
+
+    .modal-icon {
+      font-size: 3rem;
+    }
+
+    .modal-title {
+      font-size: 1.3rem;
+    }
   }
 </style>
